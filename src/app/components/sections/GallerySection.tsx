@@ -39,10 +39,9 @@ import { getPublishedGallery, type GalleryItem } from "../../../services/gallery
 type GalleryUiItem = (typeof galleryData)[number];
 
 function mapGallery(row: GalleryItem, index: number): GalleryUiItem {
-  const fallback = galleryData[index % galleryData.length];
   return {
-    src: row.foto_url?.trim() || fallback.src,
-    alt: row.judul?.trim() || fallback.alt,
+    src: row.foto_url.trim(),
+    alt: row.judul,
     big: index === 0,
   };
 }
@@ -66,9 +65,13 @@ export default function GallerySection() {
             <div
               key={i}
               className={`overflow-hidden rounded-2xl cursor-pointer group relative ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
-              onClick={() => setLb(p.src)}
+              onClick={() => p.src && setLb(p.src)}
             >
-              <img src={p.src} alt={p.alt} className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-500" />
+              {p.src ? (
+                <img src={p.src} alt={p.alt} className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-500" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-[#F5F5F5] text-[13px] font-semibold text-[#9CA3AF]">Gambar belum tersedia</div>
+              )}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/24 transition-all duration-300 flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/20 rounded-full p-2.5">
                   <Eye size={18} className="text-white" />

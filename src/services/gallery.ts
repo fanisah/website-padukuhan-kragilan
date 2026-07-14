@@ -2,9 +2,10 @@ import { supabase } from "../lib/supabase";
 
 export type GalleryItem = {
   id: number;
-  judul: string | null;
-  foto_url: string | null;
-  tanggal: string | null;
+  judul: string;
+  deskripsi: string | null;
+  foto_url: string;
+  tanggal: string;
   is_published: boolean;
   created_at: string | null;
   updated_at: string | null;
