@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import {
   Menu,
   X,
@@ -31,11 +32,11 @@ import {
 // Text:         #2B2B2B
 // Muted:        #6B7280
 // Border:       #E5E7EB
-import { goTo } from "./navigation";
 import { navigationLinks } from "../../../data/navigation";
 import { siteProfile } from "../../../data/profile";
 
 export default function Header() {
+  const navigate = useNavigate();
   const [open,     setOpen]     = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -45,7 +46,10 @@ export default function Header() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  function handleLink(href: string) { setOpen(false); goTo(href); }
+  function handleLink(path: string) {
+    setOpen(false);
+    navigate(path);
+  }
 
   return (
     <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
@@ -55,7 +59,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-[62px]">
 
           {/* Logo */}
-          <button onClick={() => handleLink("#beranda")} className="flex items-center gap-3 group">
+          <button onClick={() => handleLink("/")} className="flex items-center gap-3 group">
             <div className="w-9 h-9 rounded-[10px] bg-[#F46B35] flex items-center justify-center flex-shrink-0">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path d="M9 1.5L2 6.5V16.5H6.5V11H11.5V16.5H16V6.5L9 1.5Z" fill="white" fillOpacity="0.95" />
@@ -76,7 +80,7 @@ export default function Header() {
             {navigationLinks.map((l) => (
               <button
                 key={l.href}
-                onClick={() => handleLink(l.href)}
+                onClick={() => handleLink(l.path)}
                 className="px-3.5 py-2 text-[13px] font-medium text-[#6B7280] hover:text-[#F46B35] hover:bg-[#F46B35]/6 rounded-lg transition-all"
               >
                 {l.label}
@@ -86,7 +90,7 @@ export default function Header() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => handleLink("#kontak")}
+              onClick={() => handleLink("/kontak")}
               className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-[10px] bg-[#F46B35] text-white text-[13px] font-semibold hover:bg-[#d85a2a] transition-colors"
             >
               {siteProfile.contactAction}
@@ -109,7 +113,7 @@ export default function Header() {
             {navigationLinks.map((l) => (
               <button
                 key={l.href}
-                onClick={() => handleLink(l.href)}
+                onClick={() => handleLink(l.path)}
                 className="text-left px-3 py-2.5 text-[13.5px] font-medium text-[#4B5563] hover:text-[#F46B35] hover:bg-[#F46B35]/6 rounded-lg transition-all"
               >
                 {l.label}
@@ -117,7 +121,7 @@ export default function Header() {
             ))}
           </nav>
           <button
-            onClick={() => handleLink("#kontak")}
+            onClick={() => handleLink("/kontak")}
             className="mt-3 w-full py-3 rounded-[10px] bg-[#F46B35] text-white text-[13.5px] font-semibold"
           >
             {siteProfile.contactAction}

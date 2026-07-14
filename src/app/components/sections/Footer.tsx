@@ -19,6 +19,7 @@ import {
   Calendar,
   Zap,
 } from "lucide-react";
+import { useNavigate } from "react-router";
 
 // â”€â”€â”€ TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Primary:      #F46B35  Terracotta Orange
@@ -31,7 +32,6 @@ import {
 // Muted:        #6B7280
 // Border:       #E5E7EB
 import { OrnamentDivider } from "./shared";
-import { goTo } from "./navigation";
 import { navigationLinks } from "../../../data/navigation";
 
 function Pranadhara20px() {
@@ -45,6 +45,7 @@ function Pranadhara20px() {
 }
 
 export default function Footer() {
+  const navigate = useNavigate();
   return (
     <footer className="bg-[#261208]">
       {/* Ornament band â€” terracotta strip */}
@@ -79,7 +80,7 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {navigationLinks.map((l) => (
                 <li key={l.href}>
-                  <button onClick={() => goTo(l.href)} className="text-[12.5px] text-white/40 hover:text-white/80 transition-colors">
+                  <button onClick={() => navigate(l.path)} className="text-[12.5px] text-white/40 hover:text-white/80 transition-colors">
                     {l.label}
                   </button>
                 </li>
@@ -127,4 +128,3 @@ export default function Footer() {
 }
 
 // â”€â”€â”€ APP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
