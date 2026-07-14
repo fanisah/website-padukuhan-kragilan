@@ -34,8 +34,10 @@ import {
 // Border:       #E5E7EB
 import { navigationLinks } from "../../../data/navigation";
 import { siteProfile } from "../../../data/profile";
+import { usePublicProfile } from "../../context/PublicProfileContext";
 
 export default function Header() {
+  const profile = usePublicProfile();
   const navigate = useNavigate();
   const [open,     setOpen]     = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -60,14 +62,14 @@ export default function Header() {
 
           {/* Logo */}
           <button onClick={() => handleLink("/")} className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-[10px] bg-[#F46B35] flex items-center justify-center flex-shrink-0">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <div className="w-9 h-9 rounded-[10px] bg-[#F46B35] flex items-center justify-center flex-shrink-0 overflow-hidden">
+              {profile.logoUrl ? <img src={profile.logoUrl} alt={`Logo ${profile.name}`} className="w-full h-full object-cover" /> : <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path d="M9 1.5L2 6.5V16.5H6.5V11H11.5V16.5H16V6.5L9 1.5Z" fill="white" fillOpacity="0.95" />
-              </svg>
+              </svg>}
             </div>
             <div className="leading-none">
               <div className="text-[13.5px] font-bold text-[#2B2B2B] group-hover:text-[#F46B35] transition-colors tracking-[-0.01em]">
-                {siteProfile.name}
+                {profile.name}
               </div>
               <div className="text-[10.5px] text-[#9CA3AF] mt-[2px] tracking-wide">
                 {siteProfile.locationShort}

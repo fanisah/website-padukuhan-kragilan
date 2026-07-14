@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Menu,
   X,
@@ -33,7 +32,7 @@ import {
 // Border:       #E5E7EB
 import { Badge, OrnamentDivider, SectionHeader } from "./shared";
 import { siteProfile } from "../../../data/profile";
-import { getProfile } from "../../../services/profile";
+import { usePublicProfile } from "../../context/PublicProfileContext";
 
 const aboutIcons = {
   location: MapPin,
@@ -43,26 +42,8 @@ const aboutIcons = {
 };
 
 export default function AboutSection() {
-  const [profileName, setProfileName] = useState(siteProfile.about.title);
-
-  useEffect(() => {
-    let active = true;
-
-    getProfile()
-      .then((profile) => {
-        const databaseName = profile.nama_padukuhan?.trim();
-        if (active && databaseName) {
-          setProfileName(databaseName);
-        }
-      })
-      .catch(() => {
-        // Keep the existing local profile content as the public fallback.
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
+  const profile = usePublicProfile();
+  const paragraphs = [profile.history, [profile.vision, profile.mission].filter(Boolean).join("\n\n")].filter(Boolean);
 
   return (
     <section id="tentang" className="py-20 lg:py-24 bg-[#FCFAF7]">
@@ -73,13 +54,13 @@ export default function AboutSection() {
           <div>
             <SectionHeader
               label={siteProfile.about.label}
-              title={profileName}
-              description={siteProfile.about.description}
+              title={profile.name}
+              description={profile.description}
             />
 
             <div className="space-y-4 text-[#6B7280] text-[0.95rem] leading-[1.82]">
-              {siteProfile.about.paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
+              {paragraphs.map((paragraph) => (
+                <p key={paragraph} className="whitespace-pre-line">{paragraph}</p>
               ))}
             </div>
 

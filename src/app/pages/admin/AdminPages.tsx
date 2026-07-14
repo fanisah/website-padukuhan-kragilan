@@ -12,6 +12,4 @@ export { default as AdminUmkmPage } from "./AdminUmkmPage";
 
 export { default as AdminGalleryPage } from "./AdminGalleryPage";
 
-export function AdminProfilePage() {
-  return <AdminPlaceholderPage title="Profil" description="Kelola informasi profil Padukuhan Kragilan." />;
-}
+export { default as AdminProfilePage } from "./AdminProfilePage";

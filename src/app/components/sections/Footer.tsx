@@ -33,6 +33,7 @@ import { useNavigate } from "react-router";
 // Border:       #E5E7EB
 import { OrnamentDivider } from "./shared";
 import { navigationLinks } from "../../../data/navigation";
+import { usePublicProfile } from "../../context/PublicProfileContext";
 
 function Pranadhara20px() {
   // Subtle placeholder for the Pranadhara logo at ~20px
@@ -46,6 +47,8 @@ function Pranadhara20px() {
 
 export default function Footer() {
   const navigate = useNavigate();
+  const profile = usePublicProfile();
+  const phoneDigits = profile.phone.replace(/\D/g, "");
   return (
     <footer className="bg-[#261208]">
       {/* Ornament band â€” terracotta strip */}
@@ -59,18 +62,18 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-5">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-[10px] bg-[#F46B35] flex items-center justify-center flex-shrink-0">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <div className="w-10 h-10 rounded-[10px] bg-[#F46B35] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                {profile.logoUrl ? <img src={profile.logoUrl} alt={`Logo ${profile.name}`} className="w-full h-full object-cover" /> : <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                   <path d="M9 1.5L2 6.5V16.5H6.5V11H11.5V16.5H16V6.5L9 1.5Z" fill="white" />
-                </svg>
+                </svg>}
               </div>
               <div>
-                <div className="font-bold text-white text-[15px] leading-snug tracking-[-0.01em]">Padukuhan Kragilan</div>
+                <div className="font-bold text-white text-[15px] leading-snug tracking-[-0.01em]">{profile.name}</div>
                 <div className="text-[10.5px] text-white/38 tracking-wide">Sistem Informasi Padukuhan</div>
               </div>
             </div>
             <p className="text-[12.5px] text-white/45 leading-relaxed max-w-xs">
-              Portal informasi resmi Padukuhan Kragilan, Kalurahan Sinduadi, Kapanewon Mlati, Kabupaten Sleman, Daerah Istimewa Yogyakarta.
+              {profile.description}
             </p>
           </div>
 
@@ -94,18 +97,20 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex gap-2.5">
                 <MapPin size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" />
-                <span className="text-[12.5px] text-white/40 leading-snug">Sinduadi, Mlati, Sleman, D.I. Yogyakarta</span>
+                <span className="text-[12.5px] text-white/40 leading-snug">{profile.address}</span>
               </li>
               <li>
-                <a href="https://wa.me/6281234567890" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
-                  <Phone size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> +62 812 3456 7890
+                <a href={phoneDigits ? `https://wa.me/${phoneDigits}` : undefined} className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
+                  <Phone size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> {profile.phone}
                 </a>
               </li>
               <li>
-                <a href="mailto:kragilan.sinduadi@sleman.go.id" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
-                  <Mail size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> kragilan.sinduadi@sleman.go.id
+                <a href={`mailto:${profile.email}`} className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
+                  <Mail size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> {profile.email}
                 </a>
               </li>
+              {profile.instagramUrl && <li><a href={profile.instagramUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><Instagram size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> Instagram</a></li>}
+              {profile.youtubeUrl && <li><a href={profile.youtubeUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><ExternalLink size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> YouTube</a></li>}
             </ul>
           </div>
         </div>
@@ -113,7 +118,7 @@ export default function Footer() {
         {/* Bottom bar with KKN credit */}
         <div className="mt-12 pt-6 border-t border-white/7 flex flex-col sm:flex-row justify-between items-center gap-3 text-center sm:text-left">
           <p className="text-[11px] text-white/25">
-            © 2026 Padukuhan Kragilan. Hak cipta dilindungi.
+            © 2026 {profile.name}. Hak cipta dilindungi.
           </p>
           <div className="flex items-center gap-2">
             <Pranadhara20px />
