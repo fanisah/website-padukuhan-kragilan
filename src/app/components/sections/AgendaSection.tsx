@@ -37,9 +37,9 @@ import { getPublishedAgendas, type Agenda } from "../../../services/agendas";
 
 type AgendaItem = (typeof agendaData)[number];
 
-function formatAgendaTime(value: string | null, fallback: string) {
+function formatAgendaTime(value: string | null) {
   const time = value?.trim();
-  if (!time) return fallback;
+  if (!time) return "";
 
   const withoutZone = time.replace(/\s*WIB$/i, "");
   const normalized = withoutZone.replace(
@@ -50,21 +50,20 @@ function formatAgendaTime(value: string | null, fallback: string) {
   return `${normalized} WIB`;
 }
 
-function mapAgenda(row: Agenda, index: number): AgendaItem {
-  const fallback = agendaData[index % agendaData.length];
-  const date = row.tanggal ? new Date(row.tanggal) : null;
-  const validDate = date && !Number.isNaN(date.getTime());
+function mapAgenda(row: Agenda): AgendaItem {
+  const date = new Date(row.tanggal);
+  const validDate = !Number.isNaN(date.getTime());
 
   return {
-    day: validDate ? String(date.getUTCDate()).padStart(2, "0") : fallback.day,
+    day: validDate ? String(date.getUTCDate()).padStart(2, "0") : "—",
     month: validDate
       ? new Intl.DateTimeFormat("id-ID", { month: "short", timeZone: "UTC" })
           .format(date)
           .replace(".", "")
-      : fallback.month,
-    title: row.judul?.trim() || fallback.title,
-    time: formatAgendaTime(row.jam, fallback.time),
-    place: row.lokasi?.trim() || fallback.place,
+      : "",
+    title: row.judul,
+    time: formatAgendaTime(row.jam),
+    place: row.lokasi?.trim() ?? "",
     upcoming: true,
   };
 }
@@ -126,12 +125,12 @@ export default function AgendaSection() {
                     {!item.upcoming && <Badge variant="gray">Selesai</Badge>}
                   </div>
                   <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1.5">
-                    <span className="flex items-center gap-1.5 text-[11px] text-[#9CA3AF]">
+                    {item.time && <span className="flex items-center gap-1.5 text-[11px] text-[#9CA3AF]">
                       <Clock size={10} /> {item.time}
-                    </span>
-                    <span className="flex items-center gap-1.5 text-[11px] text-[#9CA3AF]">
+                    </span>}
+                    {item.place && <span className="flex items-center gap-1.5 text-[11px] text-[#9CA3AF]">
                       <MapPin size={10} /> {item.place}
-                    </span>
+                    </span>}
                   </div>
                 </div>
               </div>

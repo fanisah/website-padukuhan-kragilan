@@ -6,9 +6,7 @@ export function AdminDashboardPage() {
 
 export { default as AdminNewsPage } from "./AdminNewsPage";
 
-export function AdminAgendaPage() {
-  return <AdminPlaceholderPage title="Agenda" description="Kelola jadwal kegiatan dan agenda warga." />;
-}
+export { default as AdminAgendaPage } from "./AdminAgendaPage";
 
 export { default as AdminUmkmPage } from "./AdminUmkmPage";
 
