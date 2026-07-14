@@ -32,8 +32,28 @@ import {
 // Border:       #E5E7EB
 import { Badge, SectionHeader } from "./shared";
 import { umkmContent, umkmData } from "../../../data/umkm";
+import { usePublishedCollection } from "../../hooks/usePublishedCollection";
+import { getPublishedUmkm, type Umkm } from "../../../services/umkm";
+
+type UmkmItem = (typeof umkmData)[number];
+
+function mapUmkm(row: Umkm, index: number): UmkmItem {
+  const fallback = umkmData[index % umkmData.length];
+  return {
+    name: row.nama?.trim() || fallback.name,
+    category: row.kategori?.trim() || fallback.category,
+    catV: fallback.catV,
+    desc: row.deskripsi?.trim() || fallback.desc,
+    photo: row.foto_url?.trim() || fallback.photo,
+    hasMap: Boolean(row.maps_url?.trim()) || fallback.hasMap,
+    hasIG: Boolean(row.instagram_url?.trim()) || fallback.hasIG,
+    hasWeb: fallback.hasWeb,
+  };
+}
 
 export default function UmkmSection() {
+  const items = usePublishedCollection(umkmData, getPublishedUmkm, mapUmkm);
+
   return (
     <section id="umkm" className="py-20 lg:py-24 bg-[#FCFAF7]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,7 +69,7 @@ export default function UmkmSection() {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {umkmData.map((u) => (
+          {items.map((u) => (
             <div
               key={u.name}
               className="bg-white rounded-2xl overflow-hidden border border-[#E5E7EB] hover:shadow-[0_4px_24px_rgba(244,107,53,0.09)] hover:border-[#F46B35]/25 transition-all duration-300 group"

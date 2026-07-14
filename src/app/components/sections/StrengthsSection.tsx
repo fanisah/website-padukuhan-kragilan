@@ -32,6 +32,8 @@ import {
 // Border:       #E5E7EB
 import { Badge, SectionHeader } from "./shared";
 import { strengthsContent, strengthsData } from "../../../data/strengths";
+import { usePublishedCollection } from "../../hooks/usePublishedCollection";
+import { getPublishedPotencies, type Potency } from "../../../services/potencies";
 
 const strengthIcons = {
   creative: Zap,
@@ -42,7 +44,31 @@ const strengthIcons = {
   education: GraduationCap,
 };
 
+type StrengthItem = {
+  icon: keyof typeof strengthIcons;
+  title: string;
+  desc: string;
+  badge: string;
+  bv: "primary" | "teal" | "yellow" | "gray";
+};
+
+function mapPotency(row: Potency, index: number): StrengthItem {
+  const fallback = strengthsData[index % strengthsData.length];
+  const icon = Object.hasOwn(strengthIcons, row.icon ?? "")
+    ? (row.icon as StrengthItem["icon"])
+    : fallback.icon;
+  return {
+    icon,
+    title: row.judul?.trim() || fallback.title,
+    desc: row.deskripsi?.trim() || fallback.desc,
+    badge: fallback.badge,
+    bv: fallback.bv,
+  };
+}
+
 export default function StrengthsSection() {
+  const potencies = usePublishedCollection(strengthsData, getPublishedPotencies, mapPotency);
+
   return (
     <section id="potensi" className="py-20 lg:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,7 +80,7 @@ export default function StrengthsSection() {
         />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {strengthsData.map(({ icon, title, desc, badge, bv }) => {
+          {potencies.map(({ icon, title, desc, badge, bv }) => {
             const Icon = strengthIcons[icon];
             return (
             <div

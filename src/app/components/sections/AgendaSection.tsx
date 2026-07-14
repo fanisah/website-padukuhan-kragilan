@@ -32,8 +32,46 @@ import {
 // Border:       #E5E7EB
 import { Badge, SectionHeader } from "./shared";
 import { agendaContent, agendaData } from "../../../data/agenda";
+import { usePublishedCollection } from "../../hooks/usePublishedCollection";
+import { getPublishedAgendas, type Agenda } from "../../../services/agendas";
+
+type AgendaItem = (typeof agendaData)[number];
+
+function formatAgendaTime(value: string | null, fallback: string) {
+  const time = value?.trim();
+  if (!time) return fallback;
+
+  const withoutZone = time.replace(/\s*WIB$/i, "");
+  const normalized = withoutZone.replace(
+    /(\d{1,2}):(\d{2})(?::\d{2}(?:\.\d+)?)?/g,
+    (_, hours: string, minutes: string) => `${hours.padStart(2, "0")}.${minutes}`,
+  );
+
+  return `${normalized} WIB`;
+}
+
+function mapAgenda(row: Agenda, index: number): AgendaItem {
+  const fallback = agendaData[index % agendaData.length];
+  const date = row.tanggal ? new Date(row.tanggal) : null;
+  const validDate = date && !Number.isNaN(date.getTime());
+
+  return {
+    day: validDate ? String(date.getUTCDate()).padStart(2, "0") : fallback.day,
+    month: validDate
+      ? new Intl.DateTimeFormat("id-ID", { month: "short", timeZone: "UTC" })
+          .format(date)
+          .replace(".", "")
+      : fallback.month,
+    title: row.judul?.trim() || fallback.title,
+    time: formatAgendaTime(row.jam, fallback.time),
+    place: row.lokasi?.trim() || fallback.place,
+    upcoming: true,
+  };
+}
 
 export default function AgendaSection() {
+  const items = usePublishedCollection(agendaData, getPublishedAgendas, mapAgenda);
+
   return (
     <section id="agenda" className="py-20 lg:py-24 bg-[#FCFAF7]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -61,7 +99,7 @@ export default function AgendaSection() {
           </div>
 
           <div className="space-y-3">
-            {agendaData.map((item, i) => (
+            {items.map((item, i) => (
               <div
                 key={i}
                 className={`flex gap-4 p-4 rounded-2xl transition-all ${

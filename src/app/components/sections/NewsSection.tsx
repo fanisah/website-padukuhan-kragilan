@@ -32,8 +32,38 @@ import {
 // Border:       #E5E7EB
 import { Badge, SectionHeader } from "./shared";
 import { newsContent, newsData } from "../../../data/news";
+import { usePublishedCollection } from "../../hooks/usePublishedCollection";
+import { getPublishedNews, type News } from "../../../services/news";
+
+type NewsItem = (typeof newsData)[number];
+
+function formatNewsDate(value: string | null, fallback: string) {
+  if (!value) return fallback;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return fallback;
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
+function mapNews(row: News, index: number): NewsItem {
+  const fallback = newsData[index % newsData.length];
+  return {
+    category: fallback.category,
+    catV: fallback.catV,
+    date: formatNewsDate(row.tanggal, fallback.date),
+    title: row.judul?.trim() || fallback.title,
+    excerpt: row.ringkasan?.trim() || fallback.excerpt,
+    photo: row.thumbnail_url?.trim() || fallback.photo,
+  };
+}
 
 export default function NewsSection() {
+  const items = usePublishedCollection(newsData, getPublishedNews, mapNews);
+
   return (
     <section id="berita" className="py-20 lg:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,7 +79,7 @@ export default function NewsSection() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {newsData.map((n, i) => (
+          {items.map((n, i) => (
             <article
               key={i}
               className="group bg-white rounded-2xl overflow-hidden border border-[#E5E7EB] hover:shadow-[0_4px_24px_rgba(0,0,0,0.07)] transition-all duration-300 cursor-pointer"

@@ -33,8 +33,22 @@ import {
 // Border:       #E5E7EB
 import { SectionHeader } from "./shared";
 import { galleryContent, galleryData } from "../../../data/gallery";
+import { usePublishedCollection } from "../../hooks/usePublishedCollection";
+import { getPublishedGallery, type GalleryItem } from "../../../services/gallery";
+
+type GalleryUiItem = (typeof galleryData)[number];
+
+function mapGallery(row: GalleryItem, index: number): GalleryUiItem {
+  const fallback = galleryData[index % galleryData.length];
+  return {
+    src: row.foto_url?.trim() || fallback.src,
+    alt: row.judul?.trim() || fallback.alt,
+    big: index === 0,
+  };
+}
 
 export default function GallerySection() {
+  const items = usePublishedCollection(galleryData, getPublishedGallery, mapGallery);
   const [lb, setLb] = useState<string | null>(null);
 
   return (
@@ -48,7 +62,7 @@ export default function GallerySection() {
         />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3" style={{ gridAutoRows: "200px" }}>
-          {galleryData.map((p, i) => (
+          {items.map((p, i) => (
             <div
               key={i}
               className={`overflow-hidden rounded-2xl cursor-pointer group relative ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
