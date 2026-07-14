@@ -31,13 +31,7 @@ import {
 // Muted:        #6B7280
 // Border:       #E5E7EB
 import { Badge, SectionHeader } from "./shared";
-
-const AGENDA = [
-  { day: "05", month: "Jul", title: "Pertemuan Rutin PKK Padukuhan Kragilan",      time: "09.00 – 11.00 WIB", place: "Balai Padukuhan Kragilan",    upcoming: true  },
-  { day: "12", month: "Jul", title: "Posyandu Balita & Lansia",                    time: "08.00 – 12.00 WIB", place: "Rumah Kader Posyandu",         upcoming: true  },
-  { day: "17", month: "Jul", title: "Pentas Seni Karang Taruna Kragilan",          time: "19.00 WIB",         place: "Lapangan Padukuhan Kragilan",  upcoming: true  },
-  { day: "20", month: "Jun", title: "Rapat Koordinasi Dukuh se-Kalurahan Sinduadi",time: "13.00 – 15.00 WIB", place: "Balai Kalurahan Sinduadi",     upcoming: false },
-];
+import { agendaContent, agendaData } from "../../../data/agenda";
 
 export default function AgendaSection() {
   return (
@@ -47,9 +41,9 @@ export default function AgendaSection() {
 
           <div>
             <SectionHeader
-              label="Agenda"
-              title="Kegiatan Mendatang"
-              description="Jadwal kegiatan, acara budaya, dan pertemuan warga di Padukuhan Kragilan."
+              label={agendaContent.label}
+              title={agendaContent.title}
+              description={agendaContent.description}
             />
             {/* Callout box */}
             <div className="p-5 rounded-2xl bg-[#F46B35]/6 border border-[#F46B35]/18">
@@ -67,7 +61,7 @@ export default function AgendaSection() {
           </div>
 
           <div className="space-y-3">
-            {AGENDA.map((item, i) => (
+            {agendaData.map((item, i) => (
               <div
                 key={i}
                 className={`flex gap-4 p-4 rounded-2xl transition-all ${

@@ -32,6 +32,7 @@ import {
 // Border:       #E5E7EB
 import { Badge, OrnamentDivider } from "./shared";
 import { goTo } from "./navigation";
+import { siteProfile } from "../../../data/profile";
 
 export default function HeroSection() {
   return (
@@ -39,8 +40,8 @@ export default function HeroSection() {
       <div className="absolute inset-0">
         {/* Street parade â€” community, colorful, authentic */}
         <img
-          src="https://images.unsplash.com/photo-1542897643-8158da5b4607?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=85&w=1920"
-          alt="Suasana kegiatan warga Padukuhan Kragilan"
+          src={siteProfile.hero.image}
+          alt={siteProfile.hero.imageAlt}
           className="w-full h-full object-cover"
         />
         {/* Warm deep-brown overlay â€” left-heavy for text legibility */}
@@ -54,18 +55,18 @@ export default function HeroSection() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/12 border border-white/18 mb-7">
             <MapPin size={11} className="text-[#F6C445]" />
             <span className="text-[11px] font-medium text-white/85 tracking-wide">
-              Kalurahan Sinduadi · Kapanewon Mlati · Kab. Sleman
+              {siteProfile.location}
             </span>
           </div>
 
           <h1 className="text-[2.5rem] sm:text-[3.1rem] lg:text-[3.5rem] font-bold text-white leading-[1.1] tracking-[-0.025em]">
-            Selamat Datang di{" "}
+            {siteProfile.hero.title}{" "}
             <br />
-            <span className="text-[#F6C445]">Padukuhan Kragilan</span>
+            <span className="text-[#F6C445]">{siteProfile.hero.highlightedTitle}</span>
           </h1>
 
           <p className="mt-5 text-white/72 text-[1.02rem] leading-[1.75] max-w-[440px]">
-            Portal informasi resmi Padukuhan Kragilan — rumah bagi komunitas aktif, budaya lokal, dan ekonomi kreatif warga.
+            {siteProfile.hero.description}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 mt-8">
@@ -73,24 +74,19 @@ export default function HeroSection() {
               onClick={() => goTo("#tentang")}
               className="px-6 py-3.5 rounded-xl bg-[#F46B35] hover:bg-[#d85a2a] text-white text-[13.5px] font-semibold transition-all hover:-translate-y-px hover:shadow-lg"
             >
-              Kenali Kragilan
+              {siteProfile.hero.primaryAction}
             </button>
             <button
               onClick={() => goTo("#berita")}
               className="px-6 py-3.5 rounded-xl bg-white/12 hover:bg-white/22 border border-white/25 text-white text-[13.5px] font-semibold transition-all"
             >
-              Berita Terbaru
+              {siteProfile.hero.secondaryAction}
             </button>
           </div>
 
           {/* Stats */}
           <div className="flex flex-wrap gap-x-8 gap-y-4 mt-12 pt-8 border-t border-white/16">
-            {[
-              { value: "1.247", label: "Jiwa" },
-              { value: "347",   label: "KK"   },
-              { value: "4",     label: "RT"    },
-              { value: "1",     label: "RW"    },
-            ].map((s) => (
+            {siteProfile.statistics.map((s) => (
               <div key={s.label}>
                 <div className="text-[1.65rem] font-bold text-white leading-none">{s.value}</div>
                 <div className="text-[11px] text-white/48 mt-1 uppercase tracking-widest">{s.label}</div>

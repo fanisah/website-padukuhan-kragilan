@@ -31,6 +31,14 @@ import {
 // Muted:        #6B7280
 // Border:       #E5E7EB
 import { Badge, OrnamentDivider, SectionHeader } from "./shared";
+import { siteProfile } from "../../../data/profile";
+
+const aboutIcons = {
+  location: MapPin,
+  district: Building2,
+  population: Users,
+  agenda: Calendar,
+};
 
 export default function AboutSection() {
   return (
@@ -41,31 +49,22 @@ export default function AboutSection() {
           {/* Text side */}
           <div>
             <SectionHeader
-              label="Tentang Kami"
-              title="Padukuhan Kragilan"
-              description="Komunitas aktif di Kalurahan Sinduadi, Sleman — dikenal dengan semangat gotong royong, kreativitas warga, dan kekayaan budaya lokal."
+              label={siteProfile.about.label}
+              title={siteProfile.about.title}
+              description={siteProfile.about.description}
             />
 
             <div className="space-y-4 text-[#6B7280] text-[0.95rem] leading-[1.82]">
-              <p>
-                Padukuhan Kragilan adalah komunitas yang hidup dan dinamis. Warganya aktif
-                dalam kegiatan sosial, mengembangkan usaha lokal, dan menjaga tradisi budaya
-                yang telah diwariskan turun-temurun.
-              </p>
-              <p>
-                Dari warung kuliner hingga kerajinan tangan, dari kegiatan PKK hingga seni
-                pertunjukan — Kragilan adalah padukuhan yang bergerak dan berkarya bersama.
-              </p>
+              {siteProfile.about.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
 
             {/* Info grid */}
             <div className="mt-8 grid grid-cols-2 gap-3">
-              {[
-                { icon: MapPin,     label: "Kalurahan",     value: "Sinduadi"       },
-                { icon: Building2,  label: "Kapanewon",     value: "Mlati"          },
-                { icon: Users,      label: "Jumlah Warga",  value: "±1.247 Jiwa"   },
-                { icon: Calendar,   label: "Kegiatan/Bln",  value: "10+ Agenda"     },
-              ].map(({ icon: Icon, label, value }) => (
+              {siteProfile.about.facts.map(({ icon, label, value }) => {
+                const Icon = aboutIcons[icon];
+                return (
                 <div key={label} className="flex items-start gap-3 p-4 rounded-2xl bg-white border border-[#E5E7EB] hover:border-[#F46B35]/30 transition-colors">
                   <div className="w-9 h-9 rounded-xl bg-[#F46B35]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Icon size={15} className="text-[#F46B35]" />
@@ -75,11 +74,12 @@ export default function AboutSection() {
                     <div className="text-[13px] font-semibold text-[#2B2B2B] mt-0.5">{value}</div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
 
             <button className="mt-8 inline-flex items-center gap-2 text-[#F46B35] font-semibold text-[13px] hover:gap-3 transition-all">
-              Selengkapnya tentang profil padukuhan <ArrowRight size={14} />
+              {siteProfile.about.profileAction} <ArrowRight size={14} />
             </button>
           </div>
 
@@ -87,23 +87,23 @@ export default function AboutSection() {
           <div className="flex flex-col gap-3">
             <div className="h-64 rounded-2xl overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1771648283737-ce89788c4111?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
-                alt="Kegiatan warga Kragilan bersama"
+                src={siteProfile.about.images[0].src}
+                alt={siteProfile.about.images[0].alt}
                 className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-500"
               />
             </div>
             <div className="grid grid-cols-2 gap-3 h-44">
               <div className="rounded-2xl overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1590251869641-dd94fb569954?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=700"
-                  alt="Kerajinan batik warga"
+                  src={siteProfile.about.images[1].src}
+                  alt={siteProfile.about.images[1].alt}
                   className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-500"
                 />
               </div>
               <div className="rounded-2xl overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1598063413828-0d42356b9573?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=700"
-                  alt="Warga di pasar lokal"
+                  src={siteProfile.about.images[2].src}
+                  alt={siteProfile.about.images[2].alt}
                   className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-500"
                 />
               </div>

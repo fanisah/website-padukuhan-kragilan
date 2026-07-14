@@ -31,65 +31,32 @@ import {
 // Muted:        #6B7280
 // Border:       #E5E7EB
 import { Badge, SectionHeader } from "./shared";
+import { strengthsContent, strengthsData } from "../../../data/strengths";
 
-const POTENCIES = [
-  {
-    icon: Zap,
-    title: "Ekonomi Kreatif",
-    desc: "Berbagai usaha kreatif warga tumbuh dan berkembang, mulai dari produk kerajinan hingga jasa digital.",
-    badge: "Tumbuh",
-    bv: "primary" as const,
-  },
-  {
-    icon: ShoppingBag,
-    title: "UMKM Lokal",
-    desc: "Warung makan, toko kelontong, kerajinan, dan usaha jasa yang menjadi tulang punggung ekonomi warga.",
-    badge: "Aktif",
-    bv: "teal" as const,
-  },
-  {
-    icon: Music,
-    title: "Seni & Budaya",
-    desc: "Karawitan, jathilan, dan seni pertunjukan tradisional Jawa yang terus dirawat dan digelarkan.",
-    badge: "Lestari",
-    bv: "yellow" as const,
-  },
-  {
-    icon: Users,
-    title: "Kegiatan Sosial",
-    desc: "PKK, Karang Taruna, arisan, dan berbagai kegiatan kemasyarakatan yang menjalin kebersamaan.",
-    badge: "Rutin",
-    bv: "primary" as const,
-  },
-  {
-    icon: Building2,
-    title: "Fasilitas Umum",
-    desc: "Balai padukuhan, mushola, lapangan, dan sarana pendukung kehidupan warga yang memadai.",
-    badge: "Memadai",
-    bv: "teal" as const,
-  },
-  {
-    icon: GraduationCap,
-    title: "Pendidikan",
-    desc: "PAUD, TK, dan akses ke jenjang pendidikan dasar yang mendukung tumbuh kembang generasi Kragilan.",
-    badge: "Terjangkau",
-    bv: "gray" as const,
-  },
-];
+const strengthIcons = {
+  creative: Zap,
+  umkm: ShoppingBag,
+  culture: Music,
+  social: Users,
+  facilities: Building2,
+  education: GraduationCap,
+};
 
 export default function StrengthsSection() {
   return (
     <section id="potensi" className="py-20 lg:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          label="Potensi Desa"
-          title="Kekuatan Padukuhan Kragilan"
-          description="Kragilan bukan hanya tentang pertanian — ini adalah komunitas yang hidup, berbudaya, dan berkreasi."
+          label={strengthsContent.label}
+          title={strengthsContent.title}
+          description={strengthsContent.description}
           center
         />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {POTENCIES.map(({ icon: Icon, title, desc, badge, bv }) => (
+          {strengthsData.map(({ icon, title, desc, badge, bv }) => {
+            const Icon = strengthIcons[icon];
+            return (
             <div
               key={title}
               className="group p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#F46B35]/35 bg-white hover:shadow-[0_4px_24px_rgba(244,107,53,0.08)] transition-all duration-300"
@@ -103,7 +70,8 @@ export default function StrengthsSection() {
               <h3 className="font-bold text-[#2B2B2B] text-[0.93rem] mb-2 tracking-[-0.01em]">{title}</h3>
               <p className="text-[0.855rem] text-[#6B7280] leading-relaxed">{desc}</p>
             </div>
-          ))}
+          );
+          })}
         </div>
       </div>
     </section>

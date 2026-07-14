@@ -32,15 +32,7 @@ import {
 // Muted:        #6B7280
 // Border:       #E5E7EB
 import { SectionHeader } from "./shared";
-
-const GALLERY = [
-  { src: "https://images.unsplash.com/photo-1542897643-8158da5b4607?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=900",  alt: "Kirab budaya warga",          big: true  },
-  { src: "https://images.unsplash.com/photo-1771648283737-ce89788c4111?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=700", alt: "Kegiatan warga bersama",       big: false },
-  { src: "https://images.unsplash.com/photo-1590251869641-dd94fb569954?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=700", alt: "Proses membatik",              big: false },
-  { src: "https://images.unsplash.com/photo-1603958123897-902ccdc49738?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=700", alt: "Warung kuliner warga",          big: false },
-  { src: "https://images.unsplash.com/photo-1621526402311-4caf81fe77c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=700", alt: "Jalan desa Kragilan",           big: false },
-  { src: "https://images.unsplash.com/photo-1771648032911-9596e0c0a31e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=700", alt: "Anak-anak bermain di padukuhan",big: false },
-];
+import { galleryContent, galleryData } from "../../../data/gallery";
 
 export default function GallerySection() {
   const [lb, setLb] = useState<string | null>(null);
@@ -49,14 +41,14 @@ export default function GallerySection() {
     <section id="galeri" className="py-20 lg:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          label="Galeri Foto"
-          title="Potret Kragilan"
-          description="Dokumentasi kegiatan, budaya, dan kehidupan sehari-hari warga Padukuhan Kragilan."
+          label={galleryContent.label}
+          title={galleryContent.title}
+          description={galleryContent.description}
           center
         />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3" style={{ gridAutoRows: "200px" }}>
-          {GALLERY.map((p, i) => (
+          {galleryData.map((p, i) => (
             <div
               key={i}
               className={`overflow-hidden rounded-2xl cursor-pointer group relative ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
@@ -74,7 +66,7 @@ export default function GallerySection() {
 
         <div className="text-center mt-8">
           <button className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[#E5E7EB] text-[13px] font-semibold text-[#2B2B2B] hover:border-[#F46B35] hover:text-[#F46B35] transition-all">
-            Lihat semua foto <ArrowRight size={14} />
+            {galleryContent.action} <ArrowRight size={14} />
           </button>
         </div>
       </div>

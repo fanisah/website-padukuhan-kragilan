@@ -31,49 +31,7 @@ import {
 // Muted:        #6B7280
 // Border:       #E5E7EB
 import { Badge, SectionHeader } from "./shared";
-
-const UMKM_DATA = [
-  {
-    name:     "Warung Bu Sari",
-    category: "Kuliner",
-    catV:     "primary" as const,
-    desc:     "Masakan rumahan khas Jawa dengan cita rasa otentik. Buka setiap hari mulai pagi hingga sore.",
-    photo:    "https://images.unsplash.com/photo-1603958123897-902ccdc49738?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
-    hasMap:   true,
-    hasIG:    true,
-    hasWeb:   false,
-  },
-  {
-    name:     "Batik Tulis Ibu Retno",
-    category: "Kerajinan",
-    catV:     "yellow" as const,
-    desc:     "Batik tulis tangan dengan motif khas Yogyakarta. Menerima pesanan khusus dan kunjungan workshop.",
-    photo:    "https://images.unsplash.com/photo-1590251869641-dd94fb569954?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
-    hasMap:   true,
-    hasIG:    true,
-    hasWeb:   false,
-  },
-  {
-    name:     "Toko Kelontong Pak Hardi",
-    category: "Perdagangan",
-    catV:     "gray" as const,
-    desc:     "Kebutuhan sehari-hari tersedia lengkap dengan harga ramah di kantong. Buka dari pagi hingga malam.",
-    photo:    null,
-    hasMap:   true,
-    hasIG:    false,
-    hasWeb:   false,
-  },
-  {
-    name:     "Jahit & Bordir Ibu Wati",
-    category: "Jasa",
-    catV:     "teal" as const,
-    desc:     "Layanan jahit, bordir, dan permak pakaian. Pengerjaan rapi, teliti, dan selalu tepat waktu.",
-    photo:    "https://images.unsplash.com/photo-1598063413828-0d42356b9573?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
-    hasMap:   false,
-    hasIG:    true,
-    hasWeb:   false,
-  },
-];
+import { umkmContent, umkmData } from "../../../data/umkm";
 
 export default function UmkmSection() {
   return (
@@ -81,17 +39,17 @@ export default function UmkmSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-10">
           <SectionHeader
-            label="UMKM Kragilan"
-            title="Usaha Warga Kami"
-            description="Kenali dan dukung usaha-usaha lokal yang dijalankan warga Padukuhan Kragilan."
+            label={umkmContent.label}
+            title={umkmContent.title}
+            description={umkmContent.description}
           />
           <button className="flex-shrink-0 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#F46B35] hover:gap-2.5 transition-all mb-10">
-            Lihat semua UMKM <ArrowRight size={14} />
+            {umkmContent.action} <ArrowRight size={14} />
           </button>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {UMKM_DATA.map((u) => (
+          {umkmData.map((u) => (
             <div
               key={u.name}
               className="bg-white rounded-2xl overflow-hidden border border-[#E5E7EB] hover:shadow-[0_4px_24px_rgba(244,107,53,0.09)] hover:border-[#F46B35]/25 transition-all duration-300 group"

@@ -31,7 +31,9 @@ import {
 // Text:         #2B2B2B
 // Muted:        #6B7280
 // Border:       #E5E7EB
-import { NAV_LINKS, goTo } from "./navigation";
+import { goTo } from "./navigation";
+import { navigationLinks } from "../../../data/navigation";
+import { siteProfile } from "../../../data/profile";
 
 export default function Header() {
   const [open,     setOpen]     = useState(false);
@@ -61,17 +63,17 @@ export default function Header() {
             </div>
             <div className="leading-none">
               <div className="text-[13.5px] font-bold text-[#2B2B2B] group-hover:text-[#F46B35] transition-colors tracking-[-0.01em]">
-                Padukuhan Kragilan
+                {siteProfile.name}
               </div>
               <div className="text-[10.5px] text-[#9CA3AF] mt-[2px] tracking-wide">
-                Sinduadi · Mlati · Sleman
+                {siteProfile.locationShort}
               </div>
             </div>
           </button>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-0.5">
-            {NAV_LINKS.map((l) => (
+            {navigationLinks.map((l) => (
               <button
                 key={l.href}
                 onClick={() => handleLink(l.href)}
@@ -87,7 +89,7 @@ export default function Header() {
               onClick={() => handleLink("#kontak")}
               className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-[10px] bg-[#F46B35] text-white text-[13px] font-semibold hover:bg-[#d85a2a] transition-colors"
             >
-              Hubungi Kami
+              {siteProfile.contactAction}
             </button>
             <button
               onClick={() => setOpen(!open)}
@@ -104,7 +106,7 @@ export default function Header() {
       {open && (
         <div className="lg:hidden border-t border-[#E5E7EB] bg-white px-4 pt-2 pb-5">
           <nav className="flex flex-col gap-0.5">
-            {NAV_LINKS.map((l) => (
+            {navigationLinks.map((l) => (
               <button
                 key={l.href}
                 onClick={() => handleLink(l.href)}
@@ -118,7 +120,7 @@ export default function Header() {
             onClick={() => handleLink("#kontak")}
             className="mt-3 w-full py-3 rounded-[10px] bg-[#F46B35] text-white text-[13.5px] font-semibold"
           >
-            Hubungi Kami
+            {siteProfile.contactAction}
           </button>
         </div>
       )}

@@ -1,0 +1,11 @@
+export const newsData = [
+  { category: "Kegiatan", catV: "primary" as const, date: "28 Juni 2026", title: "Kirab Budaya Menyambut HUT Padukuhan Kragilan", excerpt: "Ratusan warga antusias mengikuti kirab budaya yang menampilkan berbagai kesenian tradisional dan hasil karya UMKM lokal Padukuhan Kragilan.", photo: "https://images.unsplash.com/photo-1542897643-8158da5b4607?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" },
+  { category: "Pengumuman", catV: "gray" as const, date: "20 Juni 2026", title: "Jadwal Posyandu Balita Bulan Juli 2026", excerpt: "Pengurus Posyandu Melati mengumumkan jadwal pelayanan rutin bulan Juli 2026 untuk seluruh balita di Padukuhan Kragilan.", photo: null },
+  { category: "UMKM", catV: "yellow" as const, date: "15 Juni 2026", title: "Batik Tulis Kragilan Tampil di Pameran Kabupaten Sleman", excerpt: "Batik tulis karya warga Padukuhan Kragilan mendapat sambutan antusias di Pameran UMKM Kabupaten Sleman 2026, membuka peluang pasar baru.", photo: "https://images.unsplash.com/photo-1604973104381-870c92f10343?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" },
+];
+export const newsContent = {
+  label: "Berita",
+  title: "Informasi Terkini",
+  description: "Kabar terbaru dari kegiatan dan kehidupan warga Padukuhan Kragilan.",
+  action: "Semua berita",
+};

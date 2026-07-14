@@ -31,7 +31,8 @@ import {
 // Muted:        #6B7280
 // Border:       #E5E7EB
 import { OrnamentDivider } from "./shared";
-import { NAV_LINKS, goTo } from "./navigation";
+import { goTo } from "./navigation";
+import { navigationLinks } from "../../../data/navigation";
 
 function Pranadhara20px() {
   // Subtle placeholder for the Pranadhara logo at ~20px
@@ -76,7 +77,7 @@ export default function Footer() {
           <div className="lg:col-span-3">
             <h4 className="text-[10.5px] font-semibold text-white/45 uppercase tracking-widest mb-4">Navigasi</h4>
             <ul className="space-y-2.5">
-              {NAV_LINKS.map((l) => (
+              {navigationLinks.map((l) => (
                 <li key={l.href}>
                   <button onClick={() => goTo(l.href)} className="text-[12.5px] text-white/40 hover:text-white/80 transition-colors">
                     {l.label}
@@ -126,3 +127,4 @@ export default function Footer() {
 }
 
 // â”€â”€â”€ APP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
