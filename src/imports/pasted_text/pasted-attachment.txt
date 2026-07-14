@@ -1,0 +1,535 @@
+You are a Senior Product Designer and UX Designer working at a professional digital agency.
+
+Your task is to design a complete high-fidelity responsive website for:
+
+"Sistem Informasi Padukuhan Kragilan"
+
+This is NOT a startup website.
+This is NOT a corporate website.
+This is NOT an e-commerce website.
+
+This is the official information website of Padukuhan Kragilan, Kalurahan Sinduadi, Kapanewon Mlati, Kabupaten Sleman, Daerah Istimewa Yogyakarta, Indonesia.
+
+The website should feel authentic, trustworthy, elegant, warm, and timeless.
+
+The final result must look like it was carefully crafted by an experienced human UI designer instead of AI-generated.
+
+====================================================
+
+MAIN GOAL
+
+Design a website that:
+
+• easy for villagers to use
+• trustworthy
+• modern
+• elegant
+• simple
+• timeless
+• realistic to build using Next.js + Tailwind CSS
+
+Avoid flashy design.
+
+Avoid futuristic style.
+
+Avoid startup landing page style.
+
+Avoid excessive gradients.
+
+Avoid oversized illustrations.
+
+Avoid glassmorphism.
+
+Avoid neumorphism.
+
+Avoid heavy animations.
+
+====================================================
+
+DESIGN PERSONALITY
+
+Think of these keywords:
+
+calm
+
+warm
+
+community
+
+clean
+
+friendly
+
+minimal
+
+human
+
+local
+
+accessible
+
+professional
+
+welcoming
+
+====================================================
+
+VISUAL STYLE
+
+Modern government/community website.
+
+Lots of whitespace.
+
+Large readable typography.
+
+Soft shadows.
+
+Rounded corners.
+
+Natural spacing.
+
+Professional layout.
+
+Content-first design.
+
+Images should become the visual focus.
+
+UI should never compete with the content.
+
+====================================================
+
+LOCAL IDENTITY
+
+The website should subtly represent Javanese local culture without looking traditional or old-fashioned.
+
+I will provide decorative ornament references separately.
+
+Use those ornaments ONLY as:
+
+• section divider
+• page separator
+• footer decoration
+• page title decoration
+• small corner accents
+
+Never use ornaments as large backgrounds.
+
+Never overload the interface.
+
+The website should remain minimal.
+
+====================================================
+
+COLOR PALETTE
+
+Primary
+Deep Forest Green
+#2F6B3F
+
+Secondary
+Warm Emerald
+#4E9F6D
+
+Accent
+Soft Gold
+#C9A227
+
+Background
+Warm White
+#FCFCFA
+
+Surface
+#FFFFFF
+
+Light Gray
+#F5F6F8
+
+Text
+#2D2D2D
+
+Muted Text
+#6B7280
+
+Border
+#E5E7EB
+
+Colors should feel natural and elegant.
+
+====================================================
+
+TYPOGRAPHY
+
+Use modern sans serif typography.
+
+Recommended:
+
+Inter
+
+or
+
+Plus Jakarta Sans
+
+Hierarchy:
+
+Large Hero
+
+Clear Section Titles
+
+Readable body text
+
+Comfortable spacing
+
+Avoid decorative fonts.
+
+====================================================
+
+DESIGN SYSTEM
+
+Create reusable components.
+
+Buttons
+
+Cards
+
+Navbar
+
+Footer
+
+Forms
+
+Gallery
+
+News Cards
+
+Agenda Cards
+
+UMKM Cards
+
+Section Header
+
+Badge
+
+Search Bar
+
+Pagination
+
+Everything must follow one consistent design language.
+
+====================================================
+
+RESPONSIVE
+
+Generate:
+
+Desktop 1440px
+
+Tablet 768px
+
+Mobile 390px
+
+Layouts should naturally adapt.
+
+No desktop-only design.
+
+====================================================
+
+NAVIGATION
+
+Home
+
+Profil
+
+Potensi
+
+UMKM
+
+Berita
+
+Agenda
+
+Galeri
+
+Kontak
+
+====================================================
+
+HOME PAGE STRUCTURE
+
+1 Hero
+
+Large authentic photograph of Padukuhan.
+
+Simple headline.
+
+Two CTA buttons.
+
+2 About Kragilan
+
+Short introduction.
+
+3 Village Potentials
+
+Grid cards.
+
+4 Featured UMKM
+
+Card grid.
+
+5 Latest News
+
+Three cards.
+
+6 Upcoming Agenda
+
+Timeline cards.
+
+7 Gallery Preview
+
+Photo grid.
+
+8 Contact
+
+Address
+
+Google Maps
+
+WhatsApp
+
+Email
+
+9 Footer
+
+====================================================
+
+PROFILE PAGE
+
+History
+
+Vision Mission
+
+Administrative Structure
+
+Territory
+
+General Information
+
+====================================================
+
+POTENSI PAGE
+
+Use informative cards.
+
+Possible categories:
+
+Community Activities
+
+Local Economy
+
+Public Facilities
+
+Culture
+
+Education
+
+Environment
+
+Do NOT overemphasize agriculture.
+
+====================================================
+
+UMKM PAGE
+
+Very simple.
+
+No marketplace feeling.
+
+Grid Cards.
+
+Each card contains:
+
+Photo (optional)
+
+Business Name
+
+Short Description
+
+Social Media Icons (optional)
+
+Google Maps Button
+
+Website Button (optional)
+
+No product catalog.
+
+No pricing.
+
+No checkout.
+
+====================================================
+
+NEWS PAGE
+
+Modern news listing.
+
+Featured image.
+
+Publication date.
+
+Category.
+
+Title.
+
+Excerpt.
+
+Read More.
+
+====================================================
+
+AGENDA PAGE
+
+Simple timeline.
+
+Upcoming events first.
+
+Past events below.
+
+====================================================
+
+GALLERY
+
+Large image grid.
+
+Lightbox preview.
+
+Clean spacing.
+
+====================================================
+
+CONTACT
+
+Address
+
+WhatsApp
+
+Email
+
+Google Maps embed
+
+====================================================
+
+ADMIN PANEL
+
+Design only basic admin.
+
+Simple sidebar.
+
+Dashboard.
+
+CRUD pages.
+
+No analytics.
+
+No complex charts.
+
+====================================================
+
+COMPONENT STYLE
+
+Buttons
+
+Rounded 12px
+
+Cards
+
+Rounded 20px
+
+Soft shadows
+
+Minimal borders
+
+Generous padding
+
+Icons
+
+Lucide Icons style
+
+Outline icons
+
+====================================================
+
+IMAGES
+
+Use realistic documentary photography.
+
+Avoid AI-looking images.
+
+Avoid unrealistic saturation.
+
+Use photos that feel like they were taken by local residents.
+
+====================================================
+
+ACCESSIBILITY
+
+High contrast.
+
+Readable fonts.
+
+Large clickable buttons.
+
+Comfortable spacing.
+
+====================================================
+
+MICROINTERACTIONS
+
+Very subtle.
+
+Hover elevation.
+
+Soft color transitions.
+
+Nothing flashy.
+
+====================================================
+
+OVERALL FEELING
+
+When someone visits the website, they should think:
+
+"This looks like a professional village website built by a real software company."
+
+instead of
+
+"This looks like an AI-generated template."
+
+The interface should prioritize usability, clarity, and long-term maintainability over visual effects.
+
+====================================================
+
+SPECIAL NOTE
+
+I will attach:
+
+1. Traditional ornament references.
+Use them subtly as visual accents only.
+
+2. KKN Pranadhara Mlati logo.
+
+Do NOT use the logo as the website identity.
+
+Instead, place a very small credit in the footer:
+
+"Developed during KKN-PPM UGM Pranadhara Mlati 2026"
+
+The credit should be elegant, subtle, removable, and never distract from the website itself.
+
+====================================================
+
+IMPORTANT
+
+Do NOT generate a generic landing page.
+
+Do NOT copy startup UI trends.
+
+Design this website as if it will actually be handed over to the village government and used by the community for years.
