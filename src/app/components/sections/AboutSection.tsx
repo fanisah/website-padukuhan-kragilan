@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Menu,
   X,
@@ -32,6 +33,7 @@ import {
 // Border:       #E5E7EB
 import { Badge, OrnamentDivider, SectionHeader } from "./shared";
 import { siteProfile } from "../../../data/profile";
+import { getProfile } from "../../../services/profile";
 
 const aboutIcons = {
   location: MapPin,
@@ -41,6 +43,27 @@ const aboutIcons = {
 };
 
 export default function AboutSection() {
+  const [profileName, setProfileName] = useState(siteProfile.about.title);
+
+  useEffect(() => {
+    let active = true;
+
+    getProfile()
+      .then((profile) => {
+        const databaseName = profile.nama_padukuhan?.trim();
+        if (active && databaseName) {
+          setProfileName(databaseName);
+        }
+      })
+      .catch(() => {
+        // Keep the existing local profile content as the public fallback.
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <section id="tentang" className="py-20 lg:py-24 bg-[#FCFAF7]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,7 +73,7 @@ export default function AboutSection() {
           <div>
             <SectionHeader
               label={siteProfile.about.label}
-              title={siteProfile.about.title}
+              title={profileName}
               description={siteProfile.about.description}
             />
 
