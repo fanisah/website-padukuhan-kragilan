@@ -4,9 +4,7 @@ export function AdminDashboardPage() {
   return <AdminPlaceholderPage title="Dashboard" description="Ringkasan area administrasi Padukuhan Kragilan." />;
 }
 
-export function AdminNewsPage() {
-  return <AdminPlaceholderPage title="Berita" description="Kelola informasi dan berita publik Padukuhan Kragilan." />;
-}
+export { default as AdminNewsPage } from "./AdminNewsPage";
 
 export function AdminAgendaPage() {
   return <AdminPlaceholderPage title="Agenda" description="Kelola jadwal kegiatan dan agenda warga." />;

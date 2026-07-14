@@ -5,6 +5,7 @@ import ProfilePage from "./pages/ProfilePage";
 import StrengthsPage from "./pages/StrengthsPage";
 import UmkmPage from "./pages/UmkmPage";
 import NewsPage from "./pages/NewsPage";
+import NewsDetailPage from "./pages/NewsDetailPage";
 import AgendaPage from "./pages/AgendaPage";
 import GalleryPage from "./pages/GalleryPage";
 import ContactPage from "./pages/ContactPage";
@@ -45,6 +46,7 @@ export default function App() {
             <Route path="potensi" element={<StrengthsPage />} />
             <Route path="umkm" element={<UmkmPage />} />
             <Route path="berita" element={<NewsPage />} />
+            <Route path="berita/:slug" element={<NewsDetailPage />} />
             <Route path="agenda" element={<AgendaPage />} />
             <Route path="galeri" element={<GalleryPage />} />
             <Route path="kontak" element={<ContactPage />} />

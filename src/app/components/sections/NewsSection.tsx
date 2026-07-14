@@ -34,13 +34,13 @@ import { Badge, SectionHeader } from "./shared";
 import { newsContent, newsData } from "../../../data/news";
 import { usePublishedCollection } from "../../hooks/usePublishedCollection";
 import { getPublishedNews, type News } from "../../../services/news";
+import { Link } from "react-router";
 
 type NewsItem = (typeof newsData)[number];
 
-function formatNewsDate(value: string | null, fallback: string) {
-  if (!value) return fallback;
+function formatNewsDate(value: string) {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return fallback;
+  if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat("id-ID", {
     day: "2-digit",
     month: "long",
@@ -49,20 +49,23 @@ function formatNewsDate(value: string | null, fallback: string) {
   }).format(date);
 }
 
-function mapNews(row: News, index: number): NewsItem {
-  const fallback = newsData[index % newsData.length];
+function mapNews(row: News): NewsItem {
   return {
-    category: fallback.category,
-    catV: fallback.catV,
-    date: formatNewsDate(row.tanggal, fallback.date),
-    title: row.judul?.trim() || fallback.title,
-    excerpt: row.ringkasan?.trim() || fallback.excerpt,
-    photo: row.thumbnail_url?.trim() || fallback.photo,
+    slug: row.slug,
+    category: "Berita",
+    catV: "gray",
+    date: formatNewsDate(row.tanggal),
+    title: row.judul,
+    excerpt: row.ringkasan?.trim() ?? "",
+    content: row.isi?.trim() ?? "",
+    author: row.penulis?.trim() || null,
+    photo: row.thumbnail_url?.trim() || null,
   };
 }
 
-export default function NewsSection() {
+export default function NewsSection({ limit }: { limit?: number }) {
   const items = usePublishedCollection(newsData, getPublishedNews, mapNews);
+  const visibleItems = limit ? items.slice(0, limit) : items;
 
   return (
     <section id="berita" className="py-20 lg:py-24 bg-white">
@@ -73,15 +76,15 @@ export default function NewsSection() {
             title={newsContent.title}
             description={newsContent.description}
           />
-          <button className="flex-shrink-0 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#F46B35] hover:gap-2.5 transition-all mb-10">
+          <Link to="/berita" className="flex-shrink-0 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#F46B35] hover:gap-2.5 transition-all mb-10">
             {newsContent.action} <ArrowRight size={14} />
-          </button>
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {items.map((n, i) => (
+          {visibleItems.map((n) => (
             <article
-              key={i}
+              key={n.slug}
               className="group bg-white rounded-2xl overflow-hidden border border-[#E5E7EB] hover:shadow-[0_4px_24px_rgba(0,0,0,0.07)] transition-all duration-300 cursor-pointer"
             >
               <div className="h-48 bg-[#F5F5F5] overflow-hidden">
@@ -89,7 +92,7 @@ export default function NewsSection() {
                   <img src={n.photo} alt={n.title} className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-[52px] font-black text-[#E5E7EB] select-none">K</span>
+                    <span className="text-[13px] font-semibold text-[#9CA3AF] select-none">Gambar belum tersedia</span>
                   </div>
                 )}
               </div>
@@ -99,12 +102,12 @@ export default function NewsSection() {
                   <span className="text-[11px] text-[#9CA3AF]">{n.date}</span>
                 </div>
                 <h3 className="font-bold text-[#2B2B2B] text-[0.9rem] leading-[1.45] mb-2 group-hover:text-[#F46B35] transition-colors tracking-[-0.01em]">
-                  {n.title}
+                  <Link to={`/berita/${n.slug}`}>{n.title}</Link>
                 </h3>
-                <p className="text-[0.83rem] text-[#6B7280] leading-relaxed mb-4 line-clamp-3">{n.excerpt}</p>
-                <button className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#F46B35] hover:gap-2.5 transition-all">
+                {n.excerpt && <p className="text-[0.83rem] text-[#6B7280] leading-relaxed mb-4 line-clamp-3">{n.excerpt}</p>}
+                <Link to={`/berita/${n.slug}`} className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#F46B35] hover:gap-2.5 transition-all">
                   Baca selengkapnya <ChevronRight size={13} />
-                </button>
+                </Link>
               </div>
             </article>
           ))}

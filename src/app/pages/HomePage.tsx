@@ -18,7 +18,7 @@ export default function HomePage() {
       <StrengthsSection />
       <OrnamentBand />
       <UmkmSection />
-      <NewsSection />
+      <NewsSection limit={3} />
       <OrnamentBand />
       <AgendaSection />
       <GallerySection />
