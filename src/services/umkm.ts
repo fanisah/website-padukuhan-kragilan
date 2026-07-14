@@ -2,12 +2,13 @@ import { supabase } from "../lib/supabase";
 
 export type Umkm = {
   id: number;
-  nama: string | null;
+  nama: string;
   kategori: string | null;
   deskripsi: string | null;
   foto_url: string | null;
   maps_url: string | null;
   instagram_url: string | null;
+  whatsapp: string | null;
   is_published: boolean;
   created_at: string | null;
   updated_at: string | null;

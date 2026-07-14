@@ -12,9 +12,7 @@ export function AdminAgendaPage() {
   return <AdminPlaceholderPage title="Agenda" description="Kelola jadwal kegiatan dan agenda warga." />;
 }
 
-export function AdminUmkmPage() {
-  return <AdminPlaceholderPage title="UMKM" description="Kelola daftar usaha dan UMKM warga." />;
-}
+export { default as AdminUmkmPage } from "./AdminUmkmPage";
 
 export function AdminGalleryPage() {
   return <AdminPlaceholderPage title="Galeri" description="Kelola dokumentasi foto kegiatan padukuhan." />;

@@ -35,24 +35,31 @@ import { umkmContent, umkmData } from "../../../data/umkm";
 import { usePublishedCollection } from "../../hooks/usePublishedCollection";
 import { getPublishedUmkm, type Umkm } from "../../../services/umkm";
 
-type UmkmItem = (typeof umkmData)[number];
+type UmkmItem = (typeof umkmData)[number] & {
+  hasWhatsApp: boolean;
+};
 
-function mapUmkm(row: Umkm, index: number): UmkmItem {
-  const fallback = umkmData[index % umkmData.length];
+const localUmkmItems: UmkmItem[] = umkmData.map((item) => ({
+  ...item,
+  hasWhatsApp: false,
+}));
+
+function mapUmkm(row: Umkm): UmkmItem {
   return {
-    name: row.nama?.trim() || fallback.name,
-    category: row.kategori?.trim() || fallback.category,
-    catV: fallback.catV,
-    desc: row.deskripsi?.trim() || fallback.desc,
-    photo: row.foto_url?.trim() || fallback.photo,
-    hasMap: Boolean(row.maps_url?.trim()) || fallback.hasMap,
-    hasIG: Boolean(row.instagram_url?.trim()) || fallback.hasIG,
-    hasWeb: fallback.hasWeb,
+    name: row.nama.trim(),
+    category: row.kategori?.trim() || "UMKM",
+    catV: "gray",
+    desc: row.deskripsi?.trim() || "",
+    photo: row.foto_url?.trim() || null,
+    hasMap: Boolean(row.maps_url?.trim()),
+    hasIG: Boolean(row.instagram_url?.trim()),
+    hasWhatsApp: Boolean(row.whatsapp?.trim()),
+    hasWeb: false,
   };
 }
 
 export default function UmkmSection() {
-  const items = usePublishedCollection(umkmData, getPublishedUmkm, mapUmkm);
+  const items = usePublishedCollection(localUmkmItems, getPublishedUmkm, mapUmkm);
 
   return (
     <section id="umkm" className="py-20 lg:py-24 bg-[#FCFAF7]">
@@ -93,9 +100,12 @@ export default function UmkmSection() {
               <div className="p-5">
                 <Badge variant={u.catV}>{u.category}</Badge>
                 <h3 className="font-bold text-[#2B2B2B] text-[0.9rem] mt-2.5 mb-1.5 tracking-[-0.01em]">{u.name}</h3>
-                <p className="text-[0.83rem] text-[#6B7280] leading-relaxed mb-4">{u.desc}</p>
+                {u.desc && (
+                  <p className="text-[0.83rem] text-[#6B7280] leading-relaxed mb-4">{u.desc}</p>
+                )}
 
-                <div className="flex flex-wrap gap-1.5">
+                {(u.hasMap || u.hasIG || u.hasWhatsApp || u.hasWeb) && (
+                  <div className="flex flex-wrap gap-1.5">
                   {u.hasMap && (
                     <button className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#E5E7EB] text-[#6B7280] hover:border-[#F46B35] hover:text-[#F46B35] transition-colors">
                       <MapPin size={10.5} /> Lokasi
@@ -106,12 +116,18 @@ export default function UmkmSection() {
                       <Instagram size={10.5} /> Instagram
                     </button>
                   )}
+                  {u.hasWhatsApp && (
+                    <button className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#E5E7EB] text-[#6B7280] hover:border-[#4C9A92] hover:text-[#4C9A92] transition-colors">
+                      <Phone size={10.5} /> WhatsApp
+                    </button>
+                  )}
                   {u.hasWeb && (
                     <button className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#E5E7EB] text-[#6B7280] hover:border-[#1F4E8C] hover:text-[#1F4E8C] transition-colors">
                       <Globe size={10.5} /> Website
                     </button>
                   )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
