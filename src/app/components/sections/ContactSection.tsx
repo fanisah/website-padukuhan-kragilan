@@ -66,7 +66,7 @@ export default function ContactSection() {
             {contacts.map(({ icon, label, value, link }) => {
               const Icon = contactIcons[icon];
               return (
-              <div key={label} className="flex gap-4 p-5 rounded-2xl bg-[#FFFEF9] border border-[#D8E4DF] hover:border-[#0D6F6B]/30 transition-colors">
+              <div key={label} className="flex gap-4 p-5 rounded-2xl bg-[#FFFEF9] border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.05)] hover:border-[#0D6F6B]/30 transition-colors">
                 <div className="w-10 h-10 rounded-xl bg-[#0D6F6B]/10 flex items-center justify-center flex-shrink-0">
                   <Icon size={16} className="text-[#0D6F6B]" />
                 </div>

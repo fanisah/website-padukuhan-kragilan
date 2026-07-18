@@ -87,10 +87,10 @@ export default function UmkmSection() {
           {items.map((u) => (
             <div
               key={u.name}
-              className="bg-[#FFFEF9] rounded-2xl overflow-hidden border border-[#D8E4DF] hover:shadow-[0_4px_24px_rgba(13,111,107,0.09)] hover:border-[#0D6F6B]/25 transition-all duration-300 group"
+              className="bg-[#FFFEF9] rounded-2xl overflow-hidden border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.05)] hover:shadow-[0_14px_32px_rgba(23,74,112,0.10)] hover:border-[#0D6F6B]/25 transition-[border-color,box-shadow] duration-300 group"
             >
               {/* Photo */}
-              <div className="h-44 bg-[#F5F7F4] overflow-hidden">
+              <div className="h-44 bg-[#F5F7F4] overflow-hidden border-b border-[#D8E4DF]">
                 {u.photo ? (
                   <img
                     src={u.photo}
@@ -115,22 +115,22 @@ export default function UmkmSection() {
                 {(u.hasMap || u.hasIG || u.hasWhatsApp || u.hasWeb) && (
                   <div className="flex flex-wrap gap-1.5">
                   {u.hasMap && (
-                    <button className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#D8E4DF] text-[#5F6F72] hover:border-[#0D6F6B] hover:text-[#0D6F6B] transition-colors">
+                    <button className="flex min-h-9 items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-xl border border-[#D8E4DF] text-[#5F6F72] hover:border-[#0D6F6B] hover:text-[#0D6F6B] hover:bg-[#DDEFE8]/45 transition-colors">
                       <MapPin size={10.5} /> Lokasi
                     </button>
                   )}
                   {u.hasIG && (
-                    <button className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#D8E4DF] text-[#5F6F72] hover:border-[#2F8F83] hover:text-[#2F8F83] transition-colors">
+                    <button className="flex min-h-9 items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-xl border border-[#D8E4DF] text-[#5F6F72] hover:border-[#2F8F83] hover:text-[#2F8F83] hover:bg-[#DDEFE8]/45 transition-colors">
                       <Instagram size={10.5} /> Instagram
                     </button>
                   )}
                   {u.hasWhatsApp && (
-                    <button className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#D8E4DF] text-[#5F6F72] hover:border-[#2F8F83] hover:text-[#2F8F83] transition-colors">
+                    <button className="flex min-h-9 items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-xl border border-[#D8E4DF] text-[#5F6F72] hover:border-[#2F8F83] hover:text-[#2F8F83] hover:bg-[#DDEFE8]/45 transition-colors">
                       <Phone size={10.5} /> WhatsApp
                     </button>
                   )}
                   {u.hasWeb && (
-                    <button className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-[#D8E4DF] text-[#5F6F72] hover:border-[#174A70] hover:text-[#174A70] transition-colors">
+                    <button className="flex min-h-9 items-center gap-1.5 text-[12px] font-semibold px-3 py-1.5 rounded-xl border border-[#D8E4DF] text-[#5F6F72] hover:border-[#174A70] hover:text-[#174A70] hover:bg-[#DDEFE8]/45 transition-colors">
                       <Globe size={10.5} /> Website
                     </button>
                   )}

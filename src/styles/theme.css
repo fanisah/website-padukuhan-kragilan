@@ -14,7 +14,11 @@
   --brand-heading: #173F57;
   --brand-muted: #5F6F72;
   --brand-card-radius: 1.125rem;
+  --brand-control-radius: 0.75rem;
+  --brand-button-radius: 0.875rem;
+  --brand-section-space: clamp(4.5rem, 8vw, 6rem);
   --brand-shadow: 0 10px 30px rgba(23, 74, 112, 0.07);
+  --brand-shadow-hover: 0 16px 38px rgba(23, 74, 112, 0.11);
   --background: #FFF9EC;
   --foreground: #173F57;
   --card: #FFFEF9;

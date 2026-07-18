@@ -85,9 +85,9 @@ export default function NewsSection({ limit }: { limit?: number }) {
           {visibleItems.map((n) => (
             <article
               key={n.slug}
-              className="group bg-[#FFFEF9] rounded-2xl overflow-hidden border border-[#D8E4DF] hover:shadow-[0_4px_24px_rgba(0,0,0,0.07)] transition-all duration-300 cursor-pointer"
+              className="group flex h-full flex-col bg-[#FFFEF9] rounded-2xl overflow-hidden border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.05)] hover:shadow-[0_14px_32px_rgba(23,74,112,0.10)] hover:border-[#0D6F6B]/25 transition-[border-color,box-shadow] duration-300"
             >
-              <div className="h-48 bg-[#F5F7F4] overflow-hidden">
+              <div className="h-48 bg-[#F5F7F4] overflow-hidden border-b border-[#D8E4DF]">
                 {n.photo ? (
                   <img src={n.photo} alt={n.title} className="w-full h-full object-contain" />
                 ) : (
@@ -96,16 +96,16 @@ export default function NewsSection({ limit }: { limit?: number }) {
                   </div>
                 )}
               </div>
-              <div className="p-5">
+              <div className="flex flex-1 flex-col p-5">
                 <div className="flex items-center gap-2.5 mb-3">
                   <Badge variant={n.catV}>{n.category}</Badge>
-                  <span className="text-[11px] text-[#7C8C8A]">{n.date}</span>
+                  <span className="text-[12px] font-medium text-[#62726F]">{n.date}</span>
                 </div>
                 <h3 className="font-bold text-[#173F57] text-[0.9rem] leading-[1.45] mb-2 group-hover:text-[#0D6F6B] transition-colors tracking-[-0.01em]">
                   <Link to={`/berita/${n.slug}`}>{n.title}</Link>
                 </h3>
                 {n.excerpt && <p className="text-[0.83rem] text-[#5F6F72] leading-relaxed mb-4 line-clamp-3">{n.excerpt}</p>}
-                <Link to={`/berita/${n.slug}`} className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#0D6F6B] hover:gap-2.5 transition-all">
+                <Link to={`/berita/${n.slug}`} className="mt-auto inline-flex min-h-9 items-center gap-1.5 text-[13px] font-bold text-[#0D6F6B] hover:text-[#174A70] transition-colors">
                   Baca selengkapnya <ChevronRight size={13} />
                 </Link>
               </div>

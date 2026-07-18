@@ -85,7 +85,7 @@ export default function StrengthsSection() {
             return (
             <div
               key={title}
-              className="group p-6 rounded-2xl border border-[#D8E4DF] hover:border-[#0D6F6B]/35 bg-[#FFFEF9] hover:shadow-[0_4px_24px_rgba(13,111,107,0.08)] transition-all duration-300"
+              className="group p-6 rounded-2xl border border-[#D8E4DF] hover:border-[#0D6F6B]/35 bg-[#FFFEF9] shadow-[0_8px_24px_rgba(23,74,112,0.05)] hover:shadow-[0_14px_32px_rgba(23,74,112,0.10)] transition-[border-color,box-shadow] duration-300"
             >
               <div className="flex items-start justify-between mb-5">
                 <div className="w-11 h-11 rounded-xl bg-[#0D6F6B]/8 group-hover:bg-[#0D6F6B]/15 flex items-center justify-center transition-colors">

@@ -6,3 +6,18 @@ html { scroll-behavior: smooth; }
 body { background: #FFF9EC; color: #173F57; text-rendering: optimizeLegibility; }
 :where(a, button, input, textarea, select):focus-visible { outline: 3px solid rgba(13, 111, 107, 0.32); outline-offset: 3px; }
 ::selection { background: #DDEFE8; color: #174A70; }
+
+main > section[id]:not(#beranda) { position: relative; isolation: isolate; }
+main > section[id]:not(#beranda)::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(13, 111, 107, 0.16), transparent);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}

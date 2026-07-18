@@ -69,7 +69,7 @@ export default function AboutSection() {
               {siteProfile.about.facts.map(({ icon, label, value }) => {
                 const Icon = aboutIcons[icon];
                 return (
-                <div key={label} className="flex items-start gap-3 p-4 rounded-2xl bg-[#FFFEF9] border border-[#D8E4DF] hover:border-[#0D6F6B]/30 transition-colors">
+                <div key={label} className="flex items-start gap-3 p-4 rounded-2xl bg-[#FFFEF9] border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.05)] hover:border-[#0D6F6B]/30 transition-colors">
                   <div className="w-9 h-9 rounded-xl bg-[#0D6F6B]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Icon size={15} className="text-[#0D6F6B]" />
                   </div>

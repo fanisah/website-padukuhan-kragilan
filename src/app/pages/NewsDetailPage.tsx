@@ -92,12 +92,12 @@ export default function NewsDetailPage() {
                   <div className="flex h-full items-center justify-center text-[14px] font-semibold text-[#7C8C8A]">Gambar belum tersedia</div>
                 )}
               </div>
-              <div className="p-6 sm:p-10">
+              <div className="p-6 sm:p-10 lg:px-14">
                 <p className="text-[12px] text-[#7C8C8A]">{item.date}</p>
                 <h1 className="mt-3 text-[2rem] font-bold leading-tight tracking-[-0.025em] text-[#173F57] sm:text-[2.5rem]">{item.title}</h1>
                 {item.author && <p className="mt-3 text-[13px] font-semibold text-[#5F6F72]">Oleh {item.author}</p>}
                 {item.excerpt && item.excerpt !== item.content && <p className="mt-6 text-[1rem] font-medium leading-relaxed text-[#49636A]">{item.excerpt}</p>}
-                {item.content && <div className="mt-7 whitespace-pre-wrap text-[0.95rem] leading-8 text-[#49636A]">{item.content}</div>}
+                {item.content && <div className="mt-7 whitespace-pre-wrap text-[1rem] leading-8 text-[#49636A]">{item.content}</div>}
                 <Link to="/berita" className="mt-10 inline-flex items-center gap-2 rounded-xl bg-[#0D6F6B] px-6 py-3 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#095B58]">
                   <ArrowLeft size={16} /> Kembali ke Berita
                 </Link>

@@ -125,10 +125,10 @@ export default function AgendaSection() {
                     {!item.upcoming && <Badge variant="gray">Selesai</Badge>}
                   </div>
                   <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1.5">
-                    {item.time && <span className="flex items-center gap-1.5 text-[11px] text-[#7C8C8A]">
+                    {item.time && <span className="flex items-center gap-1.5 text-[12px] font-medium text-[#62726F]">
                       <Clock size={10} /> {item.time}
                     </span>}
-                    {item.place && <span className="flex items-center gap-1.5 text-[11px] text-[#7C8C8A]">
+                    {item.place && <span className="flex items-center gap-1.5 text-[12px] font-medium text-[#62726F]">
                       <MapPin size={10} /> {item.place}
                     </span>}
                   </div>

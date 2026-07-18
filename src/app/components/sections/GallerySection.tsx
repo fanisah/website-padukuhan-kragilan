@@ -77,7 +77,7 @@ export default function GallerySection() {
           {items.map((p, i) => (
             <div
               key={i}
-              className={`overflow-hidden rounded-2xl cursor-pointer group relative bg-[#F5F7F4] ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
+              className={`overflow-hidden rounded-2xl cursor-pointer group relative bg-[#F5F7F4] border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.06)] ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
               onClick={() => p.src && setLb(p.src)}
             >
               {p.src ? (
