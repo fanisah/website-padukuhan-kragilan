@@ -1,5 +1,7 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Pencil, Plus, Trash2, X } from "lucide-react";
+import ImageUploader from "../../components/common/ImageUploader";
+import { normalizeImagePosition } from "../../utils/imageFocalPoint";
 import {
   createNews,
   deleteNews,
@@ -14,6 +16,8 @@ type NewsFormState = {
   ringkasan: string;
   isi: string;
   thumbnail_url: string;
+  image_position_x: number;
+  image_position_y: number;
   penulis: string;
   tanggal: string;
   is_published: boolean;
@@ -24,24 +28,29 @@ const emptyForm: NewsFormState = {
   ringkasan: "",
   isi: "",
   thumbnail_url: "",
+  image_position_x: 50,
+  image_position_y: 50,
   penulis: "",
   tanggal: "",
   is_published: false,
 };
 
 const inputClass =
-  "h-12 w-full rounded-xl border border-[#D1D5DB] bg-white px-4 text-[14px] text-[#2B2B2B] outline-none transition focus:border-[#F46B35] focus:ring-2 focus:ring-[#F46B35]/15";
+  "h-12 w-full rounded-xl border border-[#C8D5D0] bg-white px-4 text-[14px] text-[#173F57] outline-none transition focus:border-[#0D6F6B] focus:ring-2 focus:ring-[#0D6F6B]/15";
 
 function nullable(value: string) {
   return value.trim() || null;
 }
 
 function toPayload(form: NewsFormState): AdminNewsInput {
+  const position = normalizeImagePosition(form.image_position_x, form.image_position_y);
   return {
     judul: form.judul.trim(),
     ringkasan: nullable(form.ringkasan),
     isi: nullable(form.isi),
     thumbnail_url: nullable(form.thumbnail_url),
+    image_position_x: position.x,
+    image_position_y: position.y,
     penulis: nullable(form.penulis),
     tanggal: form.tanggal,
     is_published: form.is_published,
@@ -49,11 +58,14 @@ function toPayload(form: NewsFormState): AdminNewsInput {
 }
 
 function toForm(item: AdminNews): NewsFormState {
+  const position = normalizeImagePosition(item.image_position_x, item.image_position_y, item.image_position);
   return {
     judul: item.judul ?? "",
     ringkasan: item.ringkasan ?? "",
     isi: item.isi ?? "",
     thumbnail_url: item.thumbnail_url ?? "",
+    image_position_x: position.x,
+    image_position_y: position.y,
     penulis: item.penulis ?? "",
     tanggal: item.tanggal?.slice(0, 10) ?? "",
     is_published: item.is_published,
@@ -182,12 +194,12 @@ export default function AdminNewsPage() {
     <section>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-[1.75rem] font-bold tracking-[-0.025em] text-[#2B2B2B]">Berita</h1>
-          <p className="mt-2 text-[14px] text-[#6B7280]">Kelola informasi dan berita publik Padukuhan Kragilan.</p>
+          <h1 className="text-[1.75rem] font-bold tracking-[-0.025em] text-[#173F57]">Berita</h1>
+          <p className="mt-2 text-[14px] text-[#5F6F72]">Kelola informasi dan berita publik Padukuhan Kragilan.</p>
         </div>
         <button
           onClick={openCreate}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#F46B35] px-5 text-[14px] font-bold text-white hover:bg-[#d85a2a] transition-colors"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#0D6F6B] px-5 text-[14px] font-bold text-white hover:bg-[#095B58] transition-colors"
         >
           <Plus size={19} aria-hidden="true" />
           Tambah Berita
@@ -197,30 +209,30 @@ export default function AdminNewsPage() {
       {message && <p className="mt-6 rounded-xl bg-emerald-50 px-4 py-3 text-[14px] font-medium text-emerald-700" role="status">{message}</p>}
       {errorMessage && <p className="mt-6 rounded-xl bg-red-50 px-4 py-3 text-[14px] font-medium text-red-700" role="alert">{errorMessage}</p>}
 
-      <div className="mt-6 overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white">
+      <div className="mt-6 overflow-hidden rounded-2xl border border-[#D8E4DF] bg-white">
         {loading ? (
-          <p className="px-6 py-12 text-center text-[14px] font-medium text-[#6B7280]" role="status">Memuat data berita…</p>
+          <p className="px-6 py-12 text-center text-[14px] font-medium text-[#5F6F72]" role="status">Memuat data berita…</p>
         ) : items.length === 0 ? (
           <div className="px-6 py-12 text-center">
-            <p className="text-[16px] font-semibold text-[#2B2B2B]">Belum ada berita.</p>
-            <p className="mt-2 text-[13px] text-[#6B7280]">Tambahkan berita pertama melalui tombol di atas.</p>
+            <p className="text-[16px] font-semibold text-[#173F57]">Belum ada berita.</p>
+            <p className="mt-2 text-[13px] text-[#5F6F72]">Tambahkan berita pertama melalui tombol di atas.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] border-collapse text-left">
-              <thead className="bg-[#FCFAF7]">
-                <tr className="border-b border-[#E5E7EB]">
+              <thead className="bg-[#FFF9EC]">
+                <tr className="border-b border-[#D8E4DF]">
                   {["Judul", "Penulis", "Tanggal", "Publish Status", "Aksi"].map((heading) => (
-                    <th key={heading} className="px-5 py-4 text-[12px] font-bold uppercase tracking-wide text-[#6B7280]">{heading}</th>
+                    <th key={heading} className="px-5 py-4 text-[12px] font-bold uppercase tracking-wide text-[#5F6F72]">{heading}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {items.map((item) => (
-                  <tr key={item.id} className="border-b border-[#E5E7EB] last:border-b-0">
-                    <td className="max-w-sm px-5 py-4 text-[14px] font-semibold text-[#2B2B2B]">{item.judul}</td>
-                    <td className="px-5 py-4 text-[14px] text-[#4B5563]">{item.penulis || "—"}</td>
-                    <td className="px-5 py-4 text-[13px] text-[#6B7280]">{formatDate(item.tanggal)}</td>
+                  <tr key={item.id} className="border-b border-[#D8E4DF] last:border-b-0">
+                    <td className="max-w-sm px-5 py-4 text-[14px] font-semibold text-[#173F57]">{item.judul}</td>
+                    <td className="px-5 py-4 text-[14px] text-[#49636A]">{item.penulis || "—"}</td>
+                    <td className="px-5 py-4 text-[13px] text-[#5F6F72]">{formatDate(item.tanggal)}</td>
                     <td className="px-5 py-4">
                       <span className={`inline-flex rounded-full px-3 py-1 text-[12px] font-semibold ${item.is_published ? "bg-emerald-50 text-emerald-700" : "bg-gray-100 text-gray-600"}`}>
                         {item.is_published ? "Terbit" : "Draf"}
@@ -228,7 +240,7 @@ export default function AdminNewsPage() {
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex gap-2">
-                        <button onClick={() => openEdit(item)} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#D1D5DB] px-3 text-[13px] font-semibold text-[#4B5563] hover:border-[#F46B35] hover:text-[#F46B35]">
+                        <button onClick={() => openEdit(item)} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[#C8D5D0] px-3 text-[13px] font-semibold text-[#49636A] hover:border-[#0D6F6B] hover:text-[#0D6F6B]">
                           <Pencil size={15} /> Edit
                         </button>
                         <button onClick={() => handleDelete(item)} disabled={deletingId === item.id} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-red-200 px-3 text-[13px] font-semibold text-red-600 hover:bg-red-50 disabled:opacity-60">
@@ -249,10 +261,10 @@ export default function AdminNewsPage() {
           <div role="dialog" aria-modal="true" aria-labelledby="news-form-title" className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl sm:p-8" onMouseDown={(event) => event.stopPropagation()}>
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 id="news-form-title" className="text-[1.5rem] font-bold text-[#2B2B2B]">{editing ? "Edit Berita" : "Tambah Berita"}</h2>
-                <p className="mt-1 text-[13px] text-[#6B7280]">Lengkapi informasi berita untuk publik.</p>
+                <h2 id="news-form-title" className="text-[1.5rem] font-bold text-[#173F57]">{editing ? "Edit Berita" : "Tambah Berita"}</h2>
+                <p className="mt-1 text-[13px] text-[#5F6F72]">Lengkapi informasi berita untuk publik.</p>
               </div>
-              <button type="button" onClick={closeModal} className="flex h-11 w-11 items-center justify-center rounded-xl text-[#6B7280] hover:bg-[#F5F5F5]" aria-label="Tutup formulir">
+              <button type="button" onClick={closeModal} className="flex h-11 w-11 items-center justify-center rounded-xl text-[#5F6F72] hover:bg-[#F5F7F4]" aria-label="Tutup formulir">
                 <X size={21} />
               </button>
             </div>
@@ -267,22 +279,22 @@ export default function AdminNewsPage() {
               <Field label="Isi Berita" className="sm:col-span-2">
                 <textarea className={`${inputClass} min-h-40 resize-y py-3`} value={form.isi} onChange={(e) => updateField("isi", e.target.value)} />
               </Field>
-              <Field label="Thumbnail URL" className="sm:col-span-2">
-                <input type="url" className={inputClass} value={form.thumbnail_url} onChange={(e) => updateField("thumbnail_url", e.target.value)} />
-              </Field>
+              <div className="sm:col-span-2">
+                <ImageUploader value={form.thumbnail_url} onChange={(url) => updateField("thumbnail_url", url)} label="Thumbnail" folder="news" disabled={saving} />
+              </div>
               <Field label="Penulis">
                 <input className={inputClass} value={form.penulis} onChange={(e) => updateField("penulis", e.target.value)} />
               </Field>
               <Field label="Tanggal" required error={validation.tanggal}>
                 <input type="date" className={inputClass} value={form.tanggal} onChange={(e) => updateField("tanggal", e.target.value)} />
               </Field>
-              <label className="sm:col-span-2 flex min-h-12 items-center gap-3 rounded-xl bg-[#FCFAF7] px-4 text-[14px] font-semibold text-[#374151]">
-                <input type="checkbox" checked={form.is_published} onChange={(e) => updateField("is_published", e.target.checked)} className="h-5 w-5 accent-[#F46B35]" />
+              <label className="sm:col-span-2 flex min-h-12 items-center gap-3 rounded-xl bg-[#FFF9EC] px-4 text-[14px] font-semibold text-[#294B55]">
+                <input type="checkbox" checked={form.is_published} onChange={(e) => updateField("is_published", e.target.checked)} className="h-5 w-5 accent-[#0D6F6B]" />
                 Publish
               </label>
               <div className="sm:col-span-2 mt-2 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-                <button type="button" onClick={closeModal} disabled={saving} className="min-h-12 rounded-xl border border-[#D1D5DB] px-5 text-[14px] font-semibold text-[#4B5563]">Batal</button>
-                <button type="submit" disabled={saving} className="min-h-12 rounded-xl bg-[#F46B35] px-6 text-[14px] font-bold text-white hover:bg-[#d85a2a] disabled:opacity-60">
+                <button type="button" onClick={closeModal} disabled={saving} className="min-h-12 rounded-xl border border-[#C8D5D0] px-5 text-[14px] font-semibold text-[#49636A]">Batal</button>
+                <button type="submit" disabled={saving} className="min-h-12 rounded-xl bg-[#0D6F6B] px-6 text-[14px] font-bold text-white hover:bg-[#095B58] disabled:opacity-60">
                   {saving ? "Menyimpan…" : editing ? "Simpan Perubahan" : "Tambah Berita"}
                 </button>
               </div>
@@ -303,7 +315,7 @@ function Field({ label, required = false, error, className = "", children }: {
 }) {
   return (
     <label className={`block ${className}`}>
-      <span className="mb-2 block text-[13px] font-semibold text-[#374151]">
+      <span className="mb-2 block text-[13px] font-semibold text-[#294B55]">
         {label}{required && <span className="text-red-600"> *</span>}
       </span>
       {children}

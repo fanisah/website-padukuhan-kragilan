@@ -21,15 +21,15 @@ import {
 } from "lucide-react";
 
 // â”€â”€â”€ TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Primary:      #F46B35  Terracotta Orange
-// Secondary:    #4C9A92  Teal
-// Accent:       #F6C445  Warm Yellow
+// Primary:      #0D6F6B  Deep Teal
+// Secondary:    #2F8F83  Teal
+// Accent:       #F6C343  Warm Yellow
 // Accent Dark:  #6B4B3E  Traditional Brown
-// Deep Blue:    #1F4E8C
-// Background:   #FCFAF7  Warm White
-// Text:         #2B2B2B
-// Muted:        #6B7280
-// Border:       #E5E7EB
+// Deep Blue:    #174A70
+// Background:   #FFF9EC  Soft Cream
+// Text:         #173F57
+// Muted:        #5F6F72
+// Border:       #D8E4DF
 
 export function OrnamentDivider({
   align   = "center",
@@ -42,10 +42,10 @@ export function OrnamentDivider({
   size?:      "sm" | "md";
   className?: string;
 }) {
-  const terra      = onDark ? "rgba(244,107,53,0.92)"  : "#F46B35";
-  const yellow     = onDark ? "rgba(246,196,69,0.95)"  : "#F6C445";
-  const teal       = onDark ? "rgba(76,154,146,0.85)"  : "#4C9A92";
-  const terraFaint = onDark ? "rgba(244,107,53,0.28)"  : "rgba(244,107,53,0.25)";
+  const terra      = onDark ? "rgba(255,249,236,0.9)"  : "#0D6F6B";
+  const yellow     = onDark ? "rgba(246,196,69,0.95)"  : "#F6C343";
+  const teal       = onDark ? "rgba(76,154,146,0.85)"  : "#2F8F83";
+  const terraFaint = onDark ? "rgba(255,249,236,0.28)"  : "rgba(13,111,107,0.22)";
 
   const w = size === "sm" ? 200 : 280;
   const cx = w / 2;
@@ -94,11 +94,11 @@ export function Badge({
   variant?: "primary" | "teal" | "yellow" | "gray" | "blue";
 }) {
   const s = {
-    primary: "bg-[#F46B35]/10 text-[#c9521e]",
-    teal:    "bg-[#4C9A92]/12 text-[#3a7a73]",
-    yellow:  "bg-[#F6C445]/18 text-[#7a5f10]",
-    gray:    "bg-[#F5F5F5] text-[#6B7280] border border-[#E5E7EB]",
-    blue:    "bg-[#1F4E8C]/10 text-[#1F4E8C]",
+    primary: "bg-[#0D6F6B]/10 text-[#0A5E5A]",
+    teal:    "bg-[#2F8F83]/12 text-[#246F68]",
+    yellow:  "bg-[#F6C343]/18 text-[#7a5f10]",
+    gray:    "bg-[#F5F7F4] text-[#5F6F72] border border-[#D8E4DF]",
+    blue:    "bg-[#174A70]/10 text-[#174A70]",
   };
   return (
     <span className={`inline-block text-[11px] font-semibold px-2.5 py-[3px] rounded-full tracking-wide ${s[variant]}`}>
@@ -123,11 +123,11 @@ export function SectionHeader({
   return (
     <div className={`mb-10 ${center ? "text-center" : ""}`}>
       <Badge variant="primary">{label}</Badge>
-      <h2 className={`mt-3 text-[2rem] md:text-[2.35rem] font-bold text-[#2B2B2B] leading-[1.2] tracking-[-0.022em] ${center ? "mx-auto" : ""}`}>
+      <h2 className={`mt-3 text-[2rem] md:text-[2.35rem] font-bold text-[#173F57] leading-[1.2] tracking-[-0.022em] ${center ? "mx-auto" : ""}`}>
         {title}
       </h2>
       {description && (
-        <p className={`mt-3 text-[#6B7280] text-[1.02rem] leading-relaxed max-w-2xl ${center ? "mx-auto" : ""}`}>
+        <p className={`mt-3 text-[#5F6F72] text-[1.02rem] leading-relaxed max-w-2xl ${center ? "mx-auto" : ""}`}>
           {description}
         </p>
       )}
@@ -140,7 +140,7 @@ export function SectionHeader({
 
 export function OrnamentBand() {
   return (
-    <div className="bg-[#FCFAF7] py-5 flex items-center justify-center border-y border-[#E5E7EB]">
+    <div className="bg-[#FFF9EC] py-5 flex items-center justify-center border-y border-[#D8E4DF]">
       <OrnamentDivider align="center" size="md" />
     </div>
   );

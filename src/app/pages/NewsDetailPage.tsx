@@ -72,33 +72,33 @@ export default function NewsDetailPage() {
 
   return (
     <MainContent offsetHeader>
-      <section className="min-h-[60vh] bg-[#FCFAF7] py-16 lg:py-20">
+      <section className="min-h-[60vh] bg-[#FFF9EC] py-16 lg:py-20">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           {loading ? (
-            <p className="py-20 text-center text-[#6B7280]">Memuat berita…</p>
+            <p className="py-20 text-center text-[#5F6F72]">Memuat berita…</p>
           ) : !item ? (
             <div className="py-20 text-center">
-              <h1 className="text-[2rem] font-bold text-[#2B2B2B]">Berita tidak ditemukan.</h1>
-              <Link to="/berita" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#F46B35] px-6 py-3 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#d85a2a]">
+              <h1 className="text-[2rem] font-bold text-[#173F57]">Berita tidak ditemukan.</h1>
+              <Link to="/berita" className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#0D6F6B] px-6 py-3 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#095B58]">
                 <ArrowLeft size={16} /> Kembali ke Berita
               </Link>
             </div>
           ) : (
-            <article className="overflow-hidden rounded-3xl border border-[#E5E7EB] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.05)]">
-              <div className="aspect-[16/8] bg-[#F5F5F5]">
+            <article className="overflow-hidden rounded-3xl border border-[#D8E4DF] bg-[#FFFEF9] shadow-[0_4px_24px_rgba(0,0,0,0.05)]">
+              <div className="bg-[#F5F7F4]">
                 {item.photo ? (
-                  <img src={item.photo} alt={item.title} className="h-full w-full object-cover" />
+                  <img src={item.photo} alt={item.title} className="h-auto w-full object-contain" />
                 ) : (
-                  <div className="flex h-full items-center justify-center text-[14px] font-semibold text-[#9CA3AF]">Gambar belum tersedia</div>
+                  <div className="flex h-full items-center justify-center text-[14px] font-semibold text-[#7C8C8A]">Gambar belum tersedia</div>
                 )}
               </div>
               <div className="p-6 sm:p-10">
-                <p className="text-[12px] text-[#9CA3AF]">{item.date}</p>
-                <h1 className="mt-3 text-[2rem] font-bold leading-tight tracking-[-0.025em] text-[#2B2B2B] sm:text-[2.5rem]">{item.title}</h1>
-                {item.author && <p className="mt-3 text-[13px] font-semibold text-[#6B7280]">Oleh {item.author}</p>}
-                {item.excerpt && item.excerpt !== item.content && <p className="mt-6 text-[1rem] font-medium leading-relaxed text-[#4B5563]">{item.excerpt}</p>}
-                {item.content && <div className="mt-7 whitespace-pre-wrap text-[0.95rem] leading-8 text-[#4B5563]">{item.content}</div>}
-                <Link to="/berita" className="mt-10 inline-flex items-center gap-2 rounded-xl bg-[#F46B35] px-6 py-3 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#d85a2a]">
+                <p className="text-[12px] text-[#7C8C8A]">{item.date}</p>
+                <h1 className="mt-3 text-[2rem] font-bold leading-tight tracking-[-0.025em] text-[#173F57] sm:text-[2.5rem]">{item.title}</h1>
+                {item.author && <p className="mt-3 text-[13px] font-semibold text-[#5F6F72]">Oleh {item.author}</p>}
+                {item.excerpt && item.excerpt !== item.content && <p className="mt-6 text-[1rem] font-medium leading-relaxed text-[#49636A]">{item.excerpt}</p>}
+                {item.content && <div className="mt-7 whitespace-pre-wrap text-[0.95rem] leading-8 text-[#49636A]">{item.content}</div>}
+                <Link to="/berita" className="mt-10 inline-flex items-center gap-2 rounded-xl bg-[#0D6F6B] px-6 py-3 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#095B58]">
                   <ArrowLeft size={16} /> Kembali ke Berita
                 </Link>
               </div>

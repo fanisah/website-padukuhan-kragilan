@@ -6,6 +6,8 @@ export type Umkm = {
   kategori: string | null;
   deskripsi: string | null;
   foto_url: string | null;
+  image_position_x: number | null;
+  image_position_y: number | null;
   maps_url: string | null;
   instagram_url: string | null;
   whatsapp: string | null;

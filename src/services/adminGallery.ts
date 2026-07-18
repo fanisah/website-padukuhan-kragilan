@@ -5,6 +5,8 @@ export type AdminGalleryItem = {
   judul: string;
   deskripsi: string | null;
   foto_url: string;
+  image_position_x: number | null;
+  image_position_y: number | null;
   tanggal: string;
   is_published: boolean;
   created_at: string | null;
@@ -15,6 +17,8 @@ export type AdminGalleryInput = {
   judul: string;
   deskripsi: string | null;
   foto_url: string;
+  image_position_x: number;
+  image_position_y: number;
   tanggal: string;
   is_published: boolean;
 };

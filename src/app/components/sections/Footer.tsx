@@ -22,18 +22,19 @@ import {
 import { useNavigate } from "react-router";
 
 // â”€â”€â”€ TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Primary:      #F46B35  Terracotta Orange
-// Secondary:    #4C9A92  Teal
-// Accent:       #F6C445  Warm Yellow
+// Primary:      #0D6F6B  Deep Teal
+// Secondary:    #2F8F83  Teal
+// Accent:       #F6C343  Warm Yellow
 // Accent Dark:  #6B4B3E  Traditional Brown
-// Deep Blue:    #1F4E8C
-// Background:   #FCFAF7  Warm White
-// Text:         #2B2B2B
-// Muted:        #6B7280
-// Border:       #E5E7EB
+// Deep Blue:    #174A70
+// Background:   #FFF9EC  Soft Cream
+// Text:         #173F57
+// Muted:        #5F6F72
+// Border:       #D8E4DF
 import { OrnamentDivider } from "./shared";
 import { navigationLinks } from "../../../data/navigation";
 import { usePublicProfile } from "../../context/PublicProfileContext";
+import KragilanLogo from "../brand/KragilanLogo";
 
 function Pranadhara20px() {
   // Subtle placeholder for the Pranadhara logo at ~20px
@@ -50,9 +51,9 @@ export default function Footer() {
   const profile = usePublicProfile();
   const phoneDigits = profile.phone.replace(/\D/g, "");
   return (
-    <footer className="bg-[#261208]">
-      {/* Ornament band â€” terracotta strip */}
-      <div className="bg-[#F46B35] py-3.5 flex items-center justify-center">
+    <footer className="bg-[#123E55]">
+      {/* Ornament band â€” teal strip */}
+      <div className="bg-[#0D6F6B] py-3.5 flex items-center justify-center">
         <OrnamentDivider align="center" onDark />
       </div>
 
@@ -61,17 +62,7 @@ export default function Footer() {
 
           {/* Brand */}
           <div className="lg:col-span-5">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-[10px] bg-[#F46B35] flex items-center justify-center flex-shrink-0 overflow-hidden">
-                {profile.logoUrl ? <img src={profile.logoUrl} alt={`Logo ${profile.name}`} className="w-full h-full object-cover" /> : <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M9 1.5L2 6.5V16.5H6.5V11H11.5V16.5H16V6.5L9 1.5Z" fill="white" />
-                </svg>}
-              </div>
-              <div>
-                <div className="font-bold text-white text-[15px] leading-snug tracking-[-0.01em]">{profile.name}</div>
-                <div className="text-[10.5px] text-white/38 tracking-wide">Sistem Informasi Padukuhan</div>
-              </div>
-            </div>
+            <KragilanLogo inverse className="mb-5" />
             <p className="text-[12.5px] text-white/45 leading-relaxed max-w-xs">
               {profile.description}
             </p>
@@ -96,21 +87,21 @@ export default function Footer() {
             <h4 className="text-[10.5px] font-semibold text-white/45 uppercase tracking-widest mb-4">Kontak</h4>
             <ul className="space-y-3">
               <li className="flex gap-2.5">
-                <MapPin size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" />
+                <MapPin size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" />
                 <span className="text-[12.5px] text-white/40 leading-snug">{profile.address}</span>
               </li>
               <li>
                 <a href={phoneDigits ? `https://wa.me/${phoneDigits}` : undefined} className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
-                  <Phone size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> {profile.phone}
+                  <Phone size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> {profile.phone}
                 </a>
               </li>
               <li>
                 <a href={`mailto:${profile.email}`} className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
-                  <Mail size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> {profile.email}
+                  <Mail size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> {profile.email}
                 </a>
               </li>
-              {profile.instagramUrl && <li><a href={profile.instagramUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><Instagram size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> Instagram</a></li>}
-              {profile.youtubeUrl && <li><a href={profile.youtubeUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><ExternalLink size={13} className="text-[#F6C445] flex-shrink-0 mt-0.5" /> YouTube</a></li>}
+              {profile.instagramUrl && <li><a href={profile.instagramUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><Instagram size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> Instagram</a></li>}
+              {profile.youtubeUrl && <li><a href={profile.youtubeUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><ExternalLink size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> YouTube</a></li>}
             </ul>
           </div>
         </div>

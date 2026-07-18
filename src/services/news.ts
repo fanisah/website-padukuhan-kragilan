@@ -7,6 +7,9 @@ export type News = {
   ringkasan: string | null;
   isi: string | null;
   thumbnail_url: string | null;
+  image_position: string | null;
+  image_position_x: number | null;
+  image_position_y: number | null;
   penulis: string | null;
   tanggal: string;
   is_published: boolean;

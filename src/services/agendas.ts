@@ -8,6 +8,8 @@ export type Agenda = {
   jam: string | null;
   lokasi: string | null;
   gambar_url: string | null;
+  image_position_x: number | null;
+  image_position_y: number | null;
   is_published: boolean;
   created_at: string | null;
   updated_at: string | null;

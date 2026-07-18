@@ -21,15 +21,15 @@ import {
 } from "lucide-react";
 
 // â”€â”€â”€ TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Primary:      #F46B35  Terracotta Orange
-// Secondary:    #4C9A92  Teal
-// Accent:       #F6C445  Warm Yellow
+// Primary:      #0D6F6B  Deep Teal
+// Secondary:    #2F8F83  Teal
+// Accent:       #F6C343  Warm Yellow
 // Accent Dark:  #6B4B3E  Traditional Brown
-// Deep Blue:    #1F4E8C
-// Background:   #FCFAF7  Warm White
-// Text:         #2B2B2B
-// Muted:        #6B7280
-// Border:       #E5E7EB
+// Deep Blue:    #174A70
+// Background:   #FFF9EC  Soft Cream
+// Text:         #173F57
+// Muted:        #5F6F72
+// Border:       #D8E4DF
 import { Badge, SectionHeader } from "./shared";
 import { strengthsContent, strengthsData } from "../../../data/strengths";
 import { usePublishedCollection } from "../../hooks/usePublishedCollection";
@@ -70,7 +70,7 @@ export default function StrengthsSection() {
   const potencies = usePublishedCollection(strengthsData, getPublishedPotencies, mapPotency);
 
   return (
-    <section id="potensi" className="py-20 lg:py-24 bg-white">
+    <section id="potensi" className="py-20 lg:py-24 bg-[#FFFEF9]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           label={strengthsContent.label}
@@ -85,16 +85,16 @@ export default function StrengthsSection() {
             return (
             <div
               key={title}
-              className="group p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#F46B35]/35 bg-white hover:shadow-[0_4px_24px_rgba(244,107,53,0.08)] transition-all duration-300"
+              className="group p-6 rounded-2xl border border-[#D8E4DF] hover:border-[#0D6F6B]/35 bg-[#FFFEF9] hover:shadow-[0_4px_24px_rgba(13,111,107,0.08)] transition-all duration-300"
             >
               <div className="flex items-start justify-between mb-5">
-                <div className="w-11 h-11 rounded-xl bg-[#F46B35]/8 group-hover:bg-[#F46B35]/15 flex items-center justify-center transition-colors">
-                  <Icon size={20} className="text-[#F46B35]" strokeWidth={1.75} />
+                <div className="w-11 h-11 rounded-xl bg-[#0D6F6B]/8 group-hover:bg-[#0D6F6B]/15 flex items-center justify-center transition-colors">
+                  <Icon size={20} className="text-[#0D6F6B]" strokeWidth={1.75} />
                 </div>
                 <Badge variant={bv}>{badge}</Badge>
               </div>
-              <h3 className="font-bold text-[#2B2B2B] text-[0.93rem] mb-2 tracking-[-0.01em]">{title}</h3>
-              <p className="text-[0.855rem] text-[#6B7280] leading-relaxed">{desc}</p>
+              <h3 className="font-bold text-[#173F57] text-[0.93rem] mb-2 tracking-[-0.01em]">{title}</h3>
+              <p className="text-[0.855rem] text-[#5F6F72] leading-relaxed">{desc}</p>
             </div>
           );
           })}

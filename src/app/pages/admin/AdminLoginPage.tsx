@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Eye, EyeOff, LockKeyhole } from "lucide-react";
 import { Navigate, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../auth/AuthProvider";
+import KragilanLogo from "../../components/brand/KragilanLogo";
 
 type LoginLocationState = { from?: string };
 
@@ -37,28 +38,26 @@ export default function AdminLoginPage() {
 
   return (
     <main
-      className="min-h-screen bg-[#FCFAF7] px-4 py-10 flex items-center justify-center"
+      className="min-h-screen bg-[#FFF9EC] px-4 py-10 flex items-center justify-center"
       style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}
     >
-      <section className="w-full max-w-md rounded-3xl border border-[#E5E7EB] bg-white p-6 shadow-[0_16px_50px_rgba(43,43,43,0.08)] sm:p-9">
+      <section className="w-full max-w-md rounded-3xl border border-[#D8E4DF] bg-white p-6 shadow-[0_16px_50px_rgba(43,43,43,0.08)] sm:p-9">
         <div className="mb-8">
-          <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F46B35]/10 text-[#F46B35]">
-            <LockKeyhole size={23} aria-hidden="true" />
-          </div>
-          <p className="text-[12px] font-semibold uppercase tracking-widest text-[#F46B35]">
+          <div className="mb-5 flex items-center justify-between gap-4"><KragilanLogo /><div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#DDEFE8] text-[#0D6F6B]"><LockKeyhole size={21} aria-hidden="true" /></div></div>
+          <p className="text-[12px] font-semibold uppercase tracking-widest text-[#0D6F6B]">
             Administrasi
           </p>
-          <h1 className="mt-2 text-[1.8rem] font-bold tracking-[-0.025em] text-[#2B2B2B]">
+          <h1 className="mt-2 text-[1.8rem] font-bold tracking-[-0.025em] text-[#173F57]">
             Masuk Admin
           </h1>
-          <p className="mt-2 text-[14px] leading-relaxed text-[#6B7280]">
+          <p className="mt-2 text-[14px] leading-relaxed text-[#5F6F72]">
             Masukkan email dan kata sandi administrator Padukuhan Kragilan.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="admin-email" className="mb-2 block text-[14px] font-semibold text-[#374151]">
+            <label htmlFor="admin-email" className="mb-2 block text-[14px] font-semibold text-[#294B55]">
               Email
             </label>
             <input
@@ -68,13 +67,13 @@ export default function AdminLoginPage() {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="h-12 w-full rounded-xl border border-[#D1D5DB] px-4 text-[15px] outline-none transition focus:border-[#F46B35] focus:ring-2 focus:ring-[#F46B35]/15"
+              className="h-12 w-full rounded-xl border border-[#C8D5D0] px-4 text-[15px] outline-none transition focus:border-[#0D6F6B] focus:ring-2 focus:ring-[#0D6F6B]/15"
               placeholder="admin@contoh.id"
             />
           </div>
 
           <div>
-            <label htmlFor="admin-password" className="mb-2 block text-[14px] font-semibold text-[#374151]">
+            <label htmlFor="admin-password" className="mb-2 block text-[14px] font-semibold text-[#294B55]">
               Kata sandi
             </label>
             <div className="relative">
@@ -85,12 +84,12 @@ export default function AdminLoginPage() {
                 required
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="h-12 w-full rounded-xl border border-[#D1D5DB] px-4 pr-12 text-[15px] outline-none transition focus:border-[#F46B35] focus:ring-2 focus:ring-[#F46B35]/15"
+                className="h-12 w-full rounded-xl border border-[#C8D5D0] px-4 pr-12 text-[15px] outline-none transition focus:border-[#0D6F6B] focus:ring-2 focus:ring-[#0D6F6B]/15"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((visible) => !visible)}
-                className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-[#6B7280]"
+                className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-[#5F6F72]"
                 aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
                 aria-pressed={showPassword}
               >
@@ -108,7 +107,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={submitting || sessionLoading}
-            className="min-h-12 w-full rounded-xl bg-[#F46B35] px-6 text-[15px] font-bold text-white transition-colors hover:bg-[#d85a2a] disabled:cursor-not-allowed disabled:opacity-60"
+            className="min-h-12 w-full rounded-xl bg-[#0D6F6B] px-6 text-[15px] font-bold text-white transition-colors hover:bg-[#095B58] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? "Sedang masuk…" : "Masuk"}
           </button>

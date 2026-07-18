@@ -7,6 +7,9 @@ export type AdminNews = {
   ringkasan: string | null;
   isi: string | null;
   thumbnail_url: string | null;
+  image_position: string | null;
+  image_position_x: number | null;
+  image_position_y: number | null;
   penulis: string | null;
   tanggal: string;
   is_published: boolean;
@@ -19,6 +22,8 @@ export type AdminNewsInput = {
   ringkasan: string | null;
   isi: string | null;
   thumbnail_url: string | null;
+  image_position_x: number;
+  image_position_y: number;
   penulis: string | null;
   tanggal: string;
   is_published: boolean;
@@ -89,6 +94,7 @@ export async function getAllNews(): Promise<AdminNews[]> {
 
 export async function createNews(input: AdminNewsInput): Promise<AdminNews> {
   const payload = await withUniqueSlug(input);
+  console.log("NEWS PAYLOAD", payload);
   const { data, error } = await requireClient()
     .schema("public")
     .from("news")
@@ -96,7 +102,17 @@ export async function createNews(input: AdminNewsInput): Promise<AdminNews> {
     .select("*")
     .single<AdminNews>();
 
-  if (error) throw new Error(`Unable to create news record: ${error.message}`);
+  if (error) {
+    console.error(error);
+    alert(`Supabase Error:
+
+${error.message}
+
+${error.details ?? ""}
+
+${error.hint ?? ""}`);
+    throw new Error(`Unable to create news record: ${error.message}`);
+  }
   return data;
 }
 
@@ -105,6 +121,7 @@ export async function updateNews(
   input: AdminNewsInput,
 ): Promise<AdminNews> {
   const payload = await withUniqueSlug(input, id);
+  console.log("NEWS PAYLOAD", payload);
   const { data, error } = await requireClient()
     .schema("public")
     .from("news")
@@ -113,7 +130,17 @@ export async function updateNews(
     .select("*")
     .single<AdminNews>();
 
-  if (error) throw new Error(`Unable to update news record: ${error.message}`);
+  if (error) {
+    console.error(error);
+    alert(`Supabase Error:
+
+${error.message}
+
+${error.details ?? ""}
+
+${error.hint ?? ""}`);
+    throw new Error(`Unable to update news record: ${error.message}`);
+  }
   return data;
 }
 

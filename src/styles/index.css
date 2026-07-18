@@ -1,3 +1,8 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+html { scroll-behavior: smooth; }
+body { background: #FFF9EC; color: #173F57; text-rendering: optimizeLegibility; }
+:where(a, button, input, textarea, select):focus-visible { outline: 3px solid rgba(13, 111, 107, 0.32); outline-offset: 3px; }
+::selection { background: #DDEFE8; color: #174A70; }

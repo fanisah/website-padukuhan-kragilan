@@ -22,36 +22,49 @@ import {
 } from "lucide-react";
 
 // â”€â”€â”€ TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Primary:      #F46B35  Terracotta Orange
-// Secondary:    #4C9A92  Teal
-// Accent:       #F6C445  Warm Yellow
+// Primary:      #0D6F6B  Deep Teal
+// Secondary:    #2F8F83  Teal
+// Accent:       #F6C343  Warm Yellow
 // Accent Dark:  #6B4B3E  Traditional Brown
-// Deep Blue:    #1F4E8C
-// Background:   #FCFAF7  Warm White
-// Text:         #2B2B2B
-// Muted:        #6B7280
-// Border:       #E5E7EB
+// Deep Blue:    #174A70
+// Background:   #FFF9EC  Soft Cream
+// Text:         #173F57
+// Muted:        #5F6F72
+// Border:       #D8E4DF
 import { SectionHeader } from "./shared";
 import { galleryContent, galleryData } from "../../../data/gallery";
 import { usePublishedCollection } from "../../hooks/usePublishedCollection";
 import { getPublishedGallery, type GalleryItem } from "../../../services/gallery";
+import { normalizeImagePosition } from "../../utils/imageFocalPoint";
 
-type GalleryUiItem = (typeof galleryData)[number];
+type GalleryUiItem = (typeof galleryData)[number] & {
+  positionX: number;
+  positionY: number;
+};
+
+const localGalleryItems: GalleryUiItem[] = galleryData.map((item) => ({
+  ...item,
+  positionX: 50,
+  positionY: 50,
+}));
 
 function mapGallery(row: GalleryItem, index: number): GalleryUiItem {
+  const position = normalizeImagePosition(row.image_position_x, row.image_position_y);
   return {
     src: row.foto_url.trim(),
     alt: row.judul,
     big: index === 0,
+    positionX: position.x,
+    positionY: position.y,
   };
 }
 
 export default function GallerySection() {
-  const items = usePublishedCollection(galleryData, getPublishedGallery, mapGallery);
+  const items = usePublishedCollection(localGalleryItems, getPublishedGallery, mapGallery);
   const [lb, setLb] = useState<string | null>(null);
 
   return (
-    <section id="galeri" className="py-20 lg:py-24 bg-white">
+    <section id="galeri" className="py-20 lg:py-24 bg-[#FFFEF9]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           label={galleryContent.label}
@@ -64,16 +77,16 @@ export default function GallerySection() {
           {items.map((p, i) => (
             <div
               key={i}
-              className={`overflow-hidden rounded-2xl cursor-pointer group relative ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
+              className={`overflow-hidden rounded-2xl cursor-pointer group relative bg-[#F5F7F4] ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
               onClick={() => p.src && setLb(p.src)}
             >
               {p.src ? (
-                <img src={p.src} alt={p.alt} className="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-500" />
+                <img src={p.src} alt={p.alt} className="h-full w-full object-contain p-1.5" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-[#F5F5F5] text-[13px] font-semibold text-[#9CA3AF]">Gambar belum tersedia</div>
+                <div className="w-full h-full flex items-center justify-center bg-[#F5F7F4] text-[13px] font-semibold text-[#7C8C8A]">Gambar belum tersedia</div>
               )}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/24 transition-all duration-300 flex items-center justify-center">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/20 rounded-full p-2.5">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-[#FFFEF9]/20 rounded-full p-2.5">
                   <Eye size={18} className="text-white" />
                 </div>
               </div>
@@ -82,7 +95,7 @@ export default function GallerySection() {
         </div>
 
         <div className="text-center mt-8">
-          <button className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[#E5E7EB] text-[13px] font-semibold text-[#2B2B2B] hover:border-[#F46B35] hover:text-[#F46B35] transition-all">
+          <button className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[#D8E4DF] text-[13px] font-semibold text-[#173F57] hover:border-[#0D6F6B] hover:text-[#0D6F6B] transition-all">
             {galleryContent.action} <ArrowRight size={14} />
           </button>
         </div>
@@ -91,7 +104,7 @@ export default function GallerySection() {
       {/* Lightbox */}
       {lb && (
         <div className="fixed inset-0 z-50 bg-black/92 flex items-center justify-center p-4 md:p-8" onClick={() => setLb(null)}>
-          <button className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors" onClick={() => setLb(null)}>
+          <button className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-[#FFFEF9]/10 text-white hover:bg-[#FFFEF9]/20 transition-colors" onClick={() => setLb(null)}>
             <X size={18} />
           </button>
           <img src={lb} alt="Foto galeri" className="max-w-full max-h-[90vh] rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />

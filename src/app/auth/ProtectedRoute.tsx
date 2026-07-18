@@ -8,10 +8,10 @@ export default function ProtectedRoute() {
   if (loading) {
     return (
       <main
-        className="min-h-screen bg-[#FCFAF7] flex items-center justify-center px-4"
+        className="min-h-screen bg-[#FFF9EC] flex items-center justify-center px-4"
         style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}
       >
-        <p className="text-[15px] font-medium text-[#6B7280]" role="status">
+        <p className="text-[15px] font-medium text-[#5F6F72]" role="status">
           Memeriksa sesi admin…
         </p>
       </main>
