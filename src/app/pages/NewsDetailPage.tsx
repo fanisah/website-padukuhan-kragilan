@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ExternalLink, FileText, Globe, Images, PlayCircle } from "lucide-react";
 import { Link, useParams } from "react-router";
 import { newsData } from "../../data/news";
 import { getPublishedNews, getPublishedNewsBySlug, type News } from "../../services/news";
 import MainContent from "../components/layout/MainContent";
+import {
+  getNewsAttachments,
+  type NewsAttachment,
+  type NewsAttachmentType,
+} from "../../services/newsAttachments";
 
 type DetailNews = {
+  id: string | null;
   slug: string;
   title: string;
   date: string;
@@ -28,6 +34,7 @@ function formatDate(value: string) {
 
 function mapDatabaseNews(row: News): DetailNews {
   return {
+    id: row.id,
     slug: row.slug,
     title: row.judul,
     date: formatDate(row.tanggal),
@@ -38,27 +45,43 @@ function mapDatabaseNews(row: News): DetailNews {
   };
 }
 
+const attachmentIcons = {
+  document: FileText,
+  video: PlayCircle,
+  gallery: Images,
+  website: Globe,
+  link: ExternalLink,
+} satisfies Record<NewsAttachmentType, typeof ExternalLink>;
+
 export default function NewsDetailPage() {
   const { slug = "" } = useParams();
   const [item, setItem] = useState<DetailNews | null>(null);
+  const [attachments, setAttachments] = useState<NewsAttachment[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
     const localItem = newsData.find((news) => news.slug === slug);
+    setAttachments([]);
 
     async function load() {
       try {
         const databaseItem = await getPublishedNewsBySlug(slug);
         if (databaseItem) {
           if (active) setItem(mapDatabaseNews(databaseItem));
+          try {
+            const records = await getNewsAttachments(databaseItem.id);
+            if (active) setAttachments(records);
+          } catch (error) {
+            if (import.meta.env.DEV) console.error("Unable to load news attachments.", error);
+          }
           return;
         }
 
         const databaseCollection = await getPublishedNews();
-        if (active && databaseCollection.length === 0 && localItem) setItem(localItem);
+        if (active && databaseCollection.length === 0 && localItem) setItem({ ...localItem, id: null });
       } catch {
-        if (active && localItem) setItem(localItem);
+        if (active && localItem) setItem({ ...localItem, id: null });
       } finally {
         if (active) setLoading(false);
       }
@@ -98,6 +121,25 @@ export default function NewsDetailPage() {
                 {item.author && <p className="mt-3 text-[13px] font-semibold text-[#5F6F72]">Oleh {item.author}</p>}
                 {item.excerpt && item.excerpt !== item.content && <p className="mt-6 text-[1rem] font-medium leading-relaxed text-[#49636A]">{item.excerpt}</p>}
                 {item.content && <div className="mt-7 whitespace-pre-wrap text-[1rem] leading-8 text-[#49636A]">{item.content}</div>}
+                {attachments.length > 0 && (
+                  <section aria-labelledby="supporting-materials-title" className="mt-9 rounded-2xl border border-[#D8E4DF] bg-[#F5F7F4] p-5 sm:p-6">
+                    <h2 id="supporting-materials-title" className="text-[1.1rem] font-bold text-[#173F57]">Materi Pendukung</h2>
+                    <ul className="mt-4 space-y-2.5">
+                      {attachments.map((attachment) => {
+                        const Icon = attachmentIcons[attachment.type] ?? ExternalLink;
+                        return (
+                          <li key={attachment.id}>
+                            <a href={attachment.url} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 text-[14px] font-semibold text-[#0D6F6B] transition-colors hover:bg-[#DDEFE8]/65 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D6F6B]">
+                              <Icon size={18} aria-hidden="true" className="shrink-0" />
+                              <span>{attachment.title}</span>
+                              <ExternalLink size={14} aria-hidden="true" className="ml-auto shrink-0 opacity-65" />
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </section>
+                )}
                 <Link to="/berita" className="mt-10 inline-flex items-center gap-2 rounded-xl bg-[#0D6F6B] px-6 py-3 text-[13.5px] font-semibold text-white transition-colors hover:bg-[#095B58]">
                   <ArrowLeft size={16} /> Kembali ke Berita
                 </Link>

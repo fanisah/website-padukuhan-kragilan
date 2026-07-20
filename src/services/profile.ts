@@ -14,6 +14,18 @@ export type Profile = {
   email: string | null;
   telepon: string | null;
   logo_url: string | null;
+  hero_headline: string | null;
+  hero_subheadline: string | null;
+  hero_cta_text: string | null;
+  hero_image_url: string | null;
+  about_image_url: string | null;
+  jumlah_jiwa: number | null;
+  jumlah_kk: number | null;
+  jumlah_rt: number | null;
+  jumlah_rw: number | null;
+  jam_pelayanan: string | null;
+  facebook_url: string | null;
+  website_url: string | null;
   updated_at: string | null;
 };
 

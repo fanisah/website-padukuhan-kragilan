@@ -97,7 +97,7 @@ export default function AdminAgendaPage() {
   const [items, setItems] = useState<AdminAgenda[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<AdminAgenda | null>(null);
   const [form, setForm] = useState<AgendaFormState>(emptyForm);

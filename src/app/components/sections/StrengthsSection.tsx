@@ -1,107 +1,35 @@
-import {
-  Menu,
-  X,
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  ChevronRight,
-  ExternalLink,
-  Instagram,
-  Users,
-  ShoppingBag,
-  Music,
-  ArrowRight,
-  Eye,
-  Globe,
-  GraduationCap,
-  Building2,
-  Calendar,
-  Zap,
-} from "lucide-react";
-
-// â”€â”€â”€ TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// Primary:      #0D6F6B  Deep Teal
-// Secondary:    #2F8F83  Teal
-// Accent:       #F6C343  Warm Yellow
-// Accent Dark:  #6B4B3E  Traditional Brown
-// Deep Blue:    #174A70
-// Background:   #FFF9EC  Soft Cream
-// Text:         #173F57
-// Muted:        #5F6F72
-// Border:       #D8E4DF
-import { Badge, SectionHeader } from "./shared";
-import { strengthsContent, strengthsData } from "../../../data/strengths";
-import { usePublishedCollection } from "../../hooks/usePublishedCollection";
+import { useEffect, useState } from "react";
+import { Image as ImageIcon } from "lucide-react";
+import { SectionHeader } from "./shared";
+import { strengthsContent } from "../../../data/strengths";
 import { getPublishedPotencies, type Potency } from "../../../services/potencies";
 
-const strengthIcons = {
-  creative: Zap,
-  umkm: ShoppingBag,
-  culture: Music,
-  social: Users,
-  facilities: Building2,
-  education: GraduationCap,
-};
+export default function StrengthsSection({ pageHeading = false }: { pageHeading?: boolean }) {
+  const [potencies, setPotencies] = useState<Potency[]>([]);
 
-type StrengthItem = {
-  icon: keyof typeof strengthIcons;
-  title: string;
-  desc: string;
-  badge: string;
-  bv: "primary" | "teal" | "yellow" | "gray";
-};
-
-function mapPotency(row: Potency, index: number): StrengthItem {
-  const fallback = strengthsData[index % strengthsData.length];
-  const icon = Object.hasOwn(strengthIcons, row.icon ?? "")
-    ? (row.icon as StrengthItem["icon"])
-    : fallback.icon;
-  return {
-    icon,
-    title: row.judul?.trim() || fallback.title,
-    desc: row.deskripsi?.trim() || fallback.desc,
-    badge: fallback.badge,
-    bv: fallback.bv,
-  };
-}
-
-export default function StrengthsSection() {
-  const potencies = usePublishedCollection(strengthsData, getPublishedPotencies, mapPotency);
+  useEffect(() => {
+    let active = true;
+    getPublishedPotencies().then((rows) => { if (active) setPotencies(rows); }).catch(() => { if (active) setPotencies([]); });
+    return () => { active = false; };
+  }, []);
 
   return (
-    <section id="potensi" className="py-20 lg:py-24 bg-[#FFFEF9]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          label={strengthsContent.label}
-          title={strengthsContent.title}
-          description={strengthsContent.description}
-          center
-        />
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {potencies.map(({ icon, title, desc, badge, bv }) => {
-            const Icon = strengthIcons[icon];
-            return (
-            <div
-              key={title}
-              className="group p-6 rounded-2xl border border-[#D8E4DF] hover:border-[#0D6F6B]/35 bg-[#FFFEF9] shadow-[0_8px_24px_rgba(23,74,112,0.05)] hover:shadow-[0_14px_32px_rgba(23,74,112,0.10)] transition-[border-color,box-shadow] duration-300"
-            >
-              <div className="flex items-start justify-between mb-5">
-                <div className="w-11 h-11 rounded-xl bg-[#0D6F6B]/8 group-hover:bg-[#0D6F6B]/15 flex items-center justify-center transition-colors">
-                  <Icon size={20} className="text-[#0D6F6B]" strokeWidth={1.75} />
+    <section id="potensi" className="bg-[#FFFEF9] py-20 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeader label={strengthsContent.label} title={strengthsContent.title} description={strengthsContent.description} center as={pageHeading ? "h1" : "h2"} />
+        {potencies.length > 0 ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {potencies.map((item) => (
+              <article key={item.id} className="overflow-hidden rounded-2xl border border-[#D8E4DF] bg-[#FFFEF9] shadow-[0_8px_24px_rgba(23,74,112,0.05)]">
+                <div className="flex aspect-[16/10] items-center justify-center bg-[#F1F3EF] p-2">
+                  {item.image_url ? <img src={item.image_url} alt={item.judul ?? "Potensi Padukuhan"} className="h-full w-full object-contain" /> : <ImageIcon size={34} className="text-[#9AABA7]" aria-hidden="true" />}
                 </div>
-                <Badge variant={bv}>{badge}</Badge>
-              </div>
-              <h3 className="font-bold text-[#173F57] text-[0.93rem] mb-2 tracking-[-0.01em]">{title}</h3>
-              <p className="text-[0.855rem] text-[#5F6F72] leading-relaxed">{desc}</p>
-            </div>
-          );
-          })}
-        </div>
+                <div className="p-6"><h3 className="text-[0.95rem] font-bold text-[#173F57]">{item.judul}</h3>{item.deskripsi && <p className="mt-2 text-[0.855rem] leading-relaxed text-[#5F6F72]">{item.deskripsi}</p>}</div>
+              </article>
+            ))}
+          </div>
+        ) : <p className="rounded-2xl border border-[#D8E4DF] bg-[#FFF9EC] px-6 py-10 text-center text-sm text-[#5F6F72]">Konten potensi sedang disiapkan.</p>}
       </div>
     </section>
   );
 }
-
-// â”€â”€â”€ UMKM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

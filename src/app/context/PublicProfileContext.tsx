@@ -16,6 +16,13 @@ export type PublicProfile = {
   email: string;
   phone: string;
   logoUrl: string | null;
+  heroHeadline: string;
+  heroSubheadline: string;
+  heroImageUrl: string;
+  aboutImageUrl: string;
+  serviceHours: string;
+  facebookUrl: string | null;
+  websiteUrl: string | null;
 };
 
 const localProfile: PublicProfile = {
@@ -31,10 +38,22 @@ const localProfile: PublicProfile = {
   email: contactData[2].value,
   phone: contactData[1].value,
   logoUrl: null,
+  heroHeadline: `${siteProfile.hero.title} ${siteProfile.hero.highlightedTitle}`,
+  heroSubheadline: siteProfile.hero.description,
+  heroImageUrl: siteProfile.hero.image,
+  aboutImageUrl: siteProfile.about.images[0].src,
+  serviceHours: contactData[3].value,
+  facebookUrl: null,
+  websiteUrl: null,
 };
 
 function text(value: string | null, fallback: string) {
   return value?.trim() || fallback;
+}
+
+function optionalText(value: string | null) {
+  const cleaned = value?.trim() ?? "";
+  return /^(deskripsi singkat|judul|isi)$/i.test(cleaned) ? "" : cleaned;
 }
 
 function safeUrl(value: string | null, fallback: string | null) {
@@ -51,7 +70,7 @@ function safeUrl(value: string | null, fallback: string | null) {
 function resolveProfile(profile: Profile): PublicProfile {
   return {
     name: text(profile.nama_padukuhan, localProfile.name),
-    description: text(profile.deskripsi, localProfile.description),
+    description: optionalText(profile.deskripsi),
     history: text(profile.sejarah, localProfile.history),
     vision: text(profile.visi, localProfile.vision),
     mission: text(profile.misi, localProfile.mission),
@@ -62,6 +81,13 @@ function resolveProfile(profile: Profile): PublicProfile {
     email: text(profile.email, localProfile.email),
     phone: text(profile.telepon, localProfile.phone),
     logoUrl: safeUrl(profile.logo_url, localProfile.logoUrl),
+    heroHeadline: text(profile.hero_headline, localProfile.heroHeadline),
+    heroSubheadline: text(profile.hero_subheadline, localProfile.heroSubheadline),
+    heroImageUrl: safeUrl(profile.hero_image_url, localProfile.heroImageUrl) ?? localProfile.heroImageUrl,
+    aboutImageUrl: safeUrl(profile.about_image_url, localProfile.aboutImageUrl) ?? localProfile.aboutImageUrl,
+    serviceHours: text(profile.jam_pelayanan, localProfile.serviceHours),
+    facebookUrl: safeUrl(profile.facebook_url, localProfile.facebookUrl),
+    websiteUrl: safeUrl(profile.website_url, localProfile.websiteUrl),
   };
 }
 

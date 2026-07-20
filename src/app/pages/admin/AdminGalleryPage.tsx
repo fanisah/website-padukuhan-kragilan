@@ -75,7 +75,7 @@ export default function AdminGalleryPage() {
   const [items, setItems] = useState<AdminGalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<AdminGalleryItem | null>(null);
   const [form, setForm] = useState<GalleryFormState>(emptyForm);

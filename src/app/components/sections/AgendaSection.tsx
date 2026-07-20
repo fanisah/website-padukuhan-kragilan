@@ -34,6 +34,8 @@ import { Badge, SectionHeader } from "./shared";
 import { agendaContent, agendaData } from "../../../data/agenda";
 import { usePublishedCollection } from "../../hooks/usePublishedCollection";
 import { getPublishedAgendas, type Agenda } from "../../../services/agendas";
+import { usePublicProfile } from "../../context/PublicProfileContext";
+import { AGENDA_WHATSAPP_MESSAGE, createWhatsAppUrl } from "../../utils/contactLinks";
 
 type AgendaItem = (typeof agendaData)[number];
 
@@ -68,8 +70,10 @@ function mapAgenda(row: Agenda): AgendaItem {
   };
 }
 
-export default function AgendaSection() {
+export default function AgendaSection({ pageHeading = false }: { pageHeading?: boolean }) {
   const items = usePublishedCollection(agendaData, getPublishedAgendas, mapAgenda);
+  const profile = usePublicProfile();
+  const whatsAppUrl = createWhatsAppUrl(profile.phone, AGENDA_WHATSAPP_MESSAGE);
 
   return (
     <section id="agenda" className="py-20 lg:py-24 bg-[#FFF9EC]">
@@ -78,6 +82,7 @@ export default function AgendaSection() {
 
           <div>
             <SectionHeader
+              as={pageHeading ? "h1" : "h2"}
               label={agendaContent.label}
               title={agendaContent.title}
               description={agendaContent.description}
@@ -91,9 +96,11 @@ export default function AgendaSection() {
               <p className="text-[12.5px] text-[#5F6F72] leading-relaxed">
                 Untuk konfirmasi kehadiran atau informasi agenda terkini, hubungi pengurus padukuhan melalui WhatsApp.
               </p>
-              <button onClick={() => goTo("#kontak")} className="mt-4 flex items-center gap-1.5 text-[12px] font-semibold text-[#0D6F6B] hover:gap-2.5 transition-all">
-                Hubungi pengurus <ArrowRight size={13} />
-              </button>
+              {whatsAppUrl ? (
+                <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer" className="mt-4 flex w-fit items-center gap-1.5 rounded-sm text-[12px] font-semibold text-[#0D6F6B] hover:gap-2.5 transition-all focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D6F6B]">
+                  Hubungi pengurus <ArrowRight size={13} />
+                </a>
+              ) : null}
             </div>
           </div>
 

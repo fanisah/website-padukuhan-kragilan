@@ -16,27 +16,35 @@ import AdminLayout from "./layouts/AdminLayout";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import {
   AdminAgendaPage,
+  AdminContactPage,
   AdminDashboardPage,
   AdminGalleryPage,
   AdminNewsPage,
+  AdminHomePage,
+  AdminPotencyPage,
   AdminProfilePage,
   AdminUmkmPage,
 } from "./pages/admin/AdminPages";
+import { PublicProfileProvider } from "./context/PublicProfileContext";
 
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <PublicProfileProvider>
         <Routes>
           <Route path="admin/login" element={<AdminLoginPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboardPage />} />
+              <Route path="beranda" element={<AdminHomePage />} />
+              <Route path="profil" element={<AdminProfilePage />} />
+              <Route path="potensi" element={<AdminPotencyPage />} />
               <Route path="berita" element={<AdminNewsPage />} />
               <Route path="agenda" element={<AdminAgendaPage />} />
               <Route path="umkm" element={<AdminUmkmPage />} />
               <Route path="galeri" element={<AdminGalleryPage />} />
-              <Route path="profil" element={<AdminProfilePage />} />
+              <Route path="kontak" element={<AdminContactPage />} />
             </Route>
           </Route>
 
@@ -53,6 +61,7 @@ export default function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
+        </PublicProfileProvider>
       </AuthProvider>
     </BrowserRouter>
   );

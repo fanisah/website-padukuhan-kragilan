@@ -1,10 +1,11 @@
 import { supabase } from "../lib/supabase";
 
 export type Potency = {
-  id: number;
+  id: string;
   judul: string | null;
   deskripsi: string | null;
   icon: string | null;
+  image_url: string | null;
   urutan: number | null;
   is_published: boolean;
   created_at: string | null;

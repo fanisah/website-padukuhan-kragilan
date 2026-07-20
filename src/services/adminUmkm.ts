@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 export type AdminUmkm = {
-  id: number;
+  id: string;
   nama: string;
   kategori: string;
   alamat: string | null;
@@ -63,7 +63,7 @@ export async function createUmkm(input: AdminUmkmInput): Promise<AdminUmkm> {
 }
 
 export async function updateUmkm(
-  id: number,
+  id: string,
   input: AdminUmkmInput,
 ): Promise<AdminUmkm> {
   const { data, error } = await requireClient()
@@ -78,7 +78,7 @@ export async function updateUmkm(
   return data;
 }
 
-export async function deleteUmkm(id: number): Promise<void> {
+export async function deleteUmkm(id: string): Promise<void> {
   const { error } = await requireClient()
     .schema("public")
     .from("umkm")

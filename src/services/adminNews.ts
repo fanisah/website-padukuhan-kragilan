@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 export type AdminNews = {
-  id: number;
+  id: string;
   judul: string;
   slug: string;
   ringkasan: string | null;
@@ -46,7 +46,7 @@ export function createNewsSlug(title: string) {
   return slug || "berita";
 }
 
-async function createUniqueNewsSlug(title: string, currentId?: number) {
+async function createUniqueNewsSlug(title: string, currentId?: string) {
   const baseSlug = createNewsSlug(title);
   let query = requireClient()
     .schema("public")
@@ -58,7 +58,7 @@ async function createUniqueNewsSlug(title: string, currentId?: number) {
     query = query.neq("id", currentId);
   }
 
-  const { data, error } = await query.returns<Array<{ id: number; slug: string }>>();
+  const { data, error } = await query.returns<Array<{ id: string; slug: string }>>();
   if (error) {
     throw new Error(`Unable to validate news slug: ${error.message}`);
   }
@@ -73,7 +73,7 @@ async function createUniqueNewsSlug(title: string, currentId?: number) {
   return `${baseSlug}-${suffix}`;
 }
 
-async function withUniqueSlug(input: AdminNewsInput, currentId?: number) {
+async function withUniqueSlug(input: AdminNewsInput, currentId?: string) {
   return {
     ...input,
     slug: await createUniqueNewsSlug(input.judul, currentId),
@@ -117,7 +117,7 @@ ${error.hint ?? ""}`);
 }
 
 export async function updateNews(
-  id: number,
+  id: string,
   input: AdminNewsInput,
 ): Promise<AdminNews> {
   const payload = await withUniqueSlug(input, id);
@@ -144,7 +144,7 @@ ${error.hint ?? ""}`);
   return data;
 }
 
-export async function deleteNews(id: number): Promise<void> {
+export async function deleteNews(id: string): Promise<void> {
   const { error } = await requireClient()
     .schema("public")
     .from("news")

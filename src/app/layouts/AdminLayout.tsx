@@ -3,20 +3,27 @@ import {
   FileText,
   Images,
   LayoutDashboard,
+  Home,
+  Sparkles,
+  ContactRound,
   LogOut,
   Store,
   UserRound,
 } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router";
 import { useAuth } from "../auth/AuthProvider";
+import KragilanLogo from "../components/brand/KragilanLogo";
 
 const adminLinks = [
   { label: "Dashboard", path: "/admin", icon: LayoutDashboard, end: true },
+  { label: "Beranda", path: "/admin/beranda", icon: Home },
+  { label: "Profil", path: "/admin/profil", icon: UserRound },
+  { label: "Potensi", path: "/admin/potensi", icon: Sparkles },
+  { label: "UMKM", path: "/admin/umkm", icon: Store },
   { label: "Berita", path: "/admin/berita", icon: FileText },
   { label: "Agenda", path: "/admin/agenda", icon: CalendarDays },
-  { label: "UMKM", path: "/admin/umkm", icon: Store },
   { label: "Galeri", path: "/admin/galeri", icon: Images },
-  { label: "Profil", path: "/admin/profil", icon: UserRound },
+  { label: "Kontak", path: "/admin/kontak", icon: ContactRound },
 ];
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -43,7 +50,8 @@ export default function AdminLayout() {
       <div className="lg:grid lg:min-h-screen lg:grid-cols-[260px_1fr]">
         <aside className="hidden lg:flex flex-col border-r border-[#D8E4DF] bg-white px-5 py-6">
           <div className="mb-8 px-3">
-            <p className="text-[16px] font-bold">Admin Kragilan</p>
+            <KragilanLogo className="mb-3" />
+            <p className="text-[13px] font-bold">Administrasi</p>
             <p className="mt-1 truncate text-[12px] text-[#7C8C8A]">{user?.email}</p>
           </div>
           <nav className="flex flex-1 flex-col gap-2" aria-label="Navigasi admin">
@@ -67,7 +75,7 @@ export default function AdminLayout() {
           <header className="border-b border-[#D8E4DF] bg-white px-4 py-4 lg:hidden">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-[15px] font-bold">Admin Kragilan</p>
+                <KragilanLogo compact />
                 <p className="max-w-[210px] truncate text-[11px] text-[#7C8C8A]">{user?.email}</p>
               </div>
               <button

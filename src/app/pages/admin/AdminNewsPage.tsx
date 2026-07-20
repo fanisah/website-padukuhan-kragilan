@@ -10,6 +10,19 @@ import {
   type AdminNews,
   type AdminNewsInput,
 } from "../../../services/adminNews";
+import {
+  createNewsAttachment,
+  deleteNewsAttachment,
+  getAdminNewsAttachments,
+  updateNewsAttachment,
+  type AdminNewsAttachmentInput,
+} from "../../../services/adminNewsAttachments";
+import {
+  NEWS_ATTACHMENT_TYPES,
+  validateAttachmentUrl,
+  type NewsAttachment,
+  type NewsAttachmentType,
+} from "../../../services/newsAttachments";
 
 type NewsFormState = {
   judul: string;
@@ -21,6 +34,23 @@ type NewsFormState = {
   penulis: string;
   tanggal: string;
   is_published: boolean;
+};
+
+type AttachmentFormItem = {
+  clientId: string;
+  id: number | null;
+  title: string;
+  url: string;
+  type: NewsAttachmentType;
+  sort_order: number;
+};
+
+const attachmentTypeLabels: Record<NewsAttachmentType, string> = {
+  document: "Dokumen / PDF",
+  video: "Video",
+  gallery: "Dokumentasi / Galeri",
+  website: "Situs Web",
+  link: "Tautan Lain",
 };
 
 const emptyForm: NewsFormState = {
@@ -40,6 +70,56 @@ const inputClass =
 
 function nullable(value: string) {
   return value.trim() || null;
+}
+
+function toAttachmentForm(item: NewsAttachment): AttachmentFormItem {
+  return {
+    clientId: `saved-${item.id}`,
+    id: item.id,
+    title: item.title,
+    url: item.url,
+    type: item.type,
+    sort_order: item.sort_order,
+  };
+}
+
+function toAttachmentPayload(newsId: string, item: AttachmentFormItem): AdminNewsAttachmentInput {
+  return {
+    news_id: newsId,
+    title: item.title.trim(),
+    url: item.url.trim(),
+    type: item.type,
+    sort_order: Number.isFinite(item.sort_order) ? Math.trunc(item.sort_order) : 0,
+  };
+}
+
+async function syncAttachments(
+  newsId: string,
+  original: AttachmentFormItem[],
+  current: AttachmentFormItem[],
+) {
+  for (const item of current) {
+    const payload = toAttachmentPayload(newsId, item);
+    if (item.id === null) {
+      const created = await createNewsAttachment(payload);
+      item.id = created.id;
+      item.clientId = `saved-${created.id}`;
+    } else {
+      await updateNewsAttachment(item.id, {
+        title: payload.title,
+        url: payload.url,
+        type: payload.type,
+        sort_order: payload.sort_order,
+      });
+    }
+  }
+
+  const retainedIds = new Set(current.flatMap((item) => item.id === null ? [] : [item.id]));
+  for (const item of original) {
+    if (item.id !== null && !retainedIds.has(item.id)) {
+      await deleteNewsAttachment(item.id);
+    }
+  }
 }
 
 function toPayload(form: NewsFormState): AdminNewsInput {
@@ -87,10 +167,14 @@ export default function AdminNewsPage() {
   const [items, setItems] = useState<AdminNews[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<AdminNews | null>(null);
   const [form, setForm] = useState<NewsFormState>(emptyForm);
+  const [attachments, setAttachments] = useState<AttachmentFormItem[]>([]);
+  const [originalAttachments, setOriginalAttachments] = useState<AttachmentFormItem[]>([]);
+  const [attachmentsLoading, setAttachmentsLoading] = useState(false);
+  const [attachmentsLoadFailed, setAttachmentsLoadFailed] = useState(false);
   const [validation, setValidation] = useState<Record<string, string>>({});
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -119,17 +203,35 @@ export default function AdminNewsPage() {
   function openCreate() {
     setEditing(null);
     setForm(emptyForm);
+    setAttachments([]);
+    setOriginalAttachments([]);
+    setAttachmentsLoadFailed(false);
     setValidation({});
     setErrorMessage("");
     setModalOpen(true);
   }
 
-  function openEdit(item: AdminNews) {
+  async function openEdit(item: AdminNews) {
     setEditing(item);
     setForm(toForm(item));
+    setAttachments([]);
+    setOriginalAttachments([]);
+    setAttachmentsLoadFailed(false);
+    setAttachmentsLoading(true);
     setValidation({});
     setErrorMessage("");
     setModalOpen(true);
+    try {
+      const records = await getAdminNewsAttachments(item.id);
+      const loaded = records.map(toAttachmentForm);
+      setAttachments(loaded);
+      setOriginalAttachments(loaded);
+    } catch {
+      setAttachmentsLoadFailed(true);
+      setErrorMessage("Lampiran berita belum dapat dimuat. Tutup formulir dan coba lagi.");
+    } finally {
+      setAttachmentsLoading(false);
+    }
   }
 
   function closeModal() {
@@ -146,29 +248,82 @@ export default function AdminNewsPage() {
     }
   }
 
+  function addAttachment() {
+    setAttachments((current) => [
+      ...current,
+      {
+        clientId: crypto.randomUUID(),
+        id: null,
+        title: "",
+        url: "",
+        type: "link",
+        sort_order: current.length,
+      },
+    ]);
+  }
+
+  function updateAttachment<Key extends keyof AttachmentFormItem>(
+    clientId: string,
+    key: Key,
+    value: AttachmentFormItem[Key],
+  ) {
+    setAttachments((current) => current.map((item) =>
+      item.clientId === clientId ? { ...item, [key]: value } : item,
+    ));
+    setValidation((current) => ({
+      ...current,
+      [`attachment-${clientId}-${String(key)}`]: "",
+    }));
+  }
+
+  function removeAttachment(clientId: string) {
+    setAttachments((current) => current.filter((item) => item.clientId !== clientId));
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const nextValidation: Record<string, string> = {};
     if (!form.judul.trim()) nextValidation.judul = "Judul wajib diisi.";
     if (!form.tanggal) nextValidation.tanggal = "Tanggal wajib diisi.";
+    for (const attachment of attachments) {
+      if (!attachment.title.trim()) {
+        nextValidation[`attachment-${attachment.clientId}-title`] = "Judul lampiran wajib diisi.";
+      }
+      const urlError = validateAttachmentUrl(attachment.url);
+      if (urlError) nextValidation[`attachment-${attachment.clientId}-url`] = urlError;
+    }
+    if (attachmentsLoadFailed) {
+      setErrorMessage("Lampiran berita belum dapat dimuat. Tutup formulir dan coba lagi.");
+      return;
+    }
     setValidation(nextValidation);
     if (Object.keys(nextValidation).length > 0) return;
 
     setSaving(true);
     setMessage("");
     setErrorMessage("");
+    let articleSaved = false;
     try {
+      let savedNews: AdminNews;
       if (editing) {
-        await updateNews(editing.id, toPayload(form));
+        savedNews = await updateNews(editing.id, toPayload(form));
+        articleSaved = true;
+        await syncAttachments(savedNews.id, originalAttachments, attachments);
         setMessage("Perubahan berhasil disimpan.");
       } else {
-        await createNews(toPayload(form));
+        savedNews = await createNews(toPayload(form));
+        articleSaved = true;
+        setEditing(savedNews);
+        await syncAttachments(savedNews.id, [], attachments);
         setMessage("Berita berhasil ditambahkan.");
       }
       await refreshList();
       setModalOpen(false);
     } catch {
-      setErrorMessage("Berita belum dapat disimpan. Silakan coba lagi.");
+      setAttachments((current) => current.map((item) => ({ ...item })));
+      setErrorMessage(articleSaved
+        ? "Berita tersimpan, tetapi lampiran belum tersimpan sepenuhnya. Formulir tetap terbuka agar dapat dicoba lagi."
+        : "Berita belum dapat disimpan. Silakan coba lagi.");
     } finally {
       setSaving(false);
     }
@@ -282,6 +437,47 @@ export default function AdminNewsPage() {
               <div className="sm:col-span-2">
                 <ImageUploader value={form.thumbnail_url} onChange={(url) => updateField("thumbnail_url", url)} label="Thumbnail" folder="news" disabled={saving} />
               </div>
+              <fieldset className="sm:col-span-2 rounded-2xl border border-[#D8E4DF] bg-[#FFF9EC]/55 p-4 sm:p-5" disabled={saving || attachmentsLoading}>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <legend className="text-[15px] font-bold text-[#173F57]">Lampiran Berita</legend>
+                    <p className="mt-1 text-[12px] text-[#5F6F72]">Tambahkan materi pendukung berupa tautan eksternal bila diperlukan.</p>
+                  </div>
+                  <button type="button" onClick={addAttachment} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-[#0D6F6B] px-4 text-[13px] font-semibold text-[#0D6F6B] hover:bg-[#DDEFE8]/50">
+                    <Plus size={16} /> Tambah Lampiran
+                  </button>
+                </div>
+
+                {attachmentsLoading ? (
+                  <p className="mt-4 text-[13px] text-[#5F6F72]" role="status">Memuat lampiranâ€¦</p>
+                ) : attachments.length === 0 ? (
+                  <p className="mt-4 text-[13px] text-[#7C8C8A]">Belum ada lampiran.</p>
+                ) : (
+                  <div className="mt-4 space-y-4">
+                    {attachments.map((attachment) => (
+                      <div key={attachment.clientId} className="grid gap-4 rounded-2xl border border-[#D8E4DF] bg-white p-4 sm:grid-cols-2">
+                        <Field label="Judul tautan" required error={validation[`attachment-${attachment.clientId}-title`]} className="sm:col-span-2">
+                          <input className={inputClass} value={attachment.title} onChange={(event) => updateAttachment(attachment.clientId, "title", event.target.value)} />
+                        </Field>
+                        <Field label="URL" required error={validation[`attachment-${attachment.clientId}-url`]} className="sm:col-span-2">
+                          <input type="text" inputMode="url" autoCapitalize="none" placeholder="https://" className={inputClass} value={attachment.url} onChange={(event) => updateAttachment(attachment.clientId, "url", event.target.value)} />
+                        </Field>
+                        <Field label="Jenis">
+                          <select className={inputClass} value={attachment.type} onChange={(event) => updateAttachment(attachment.clientId, "type", event.target.value as NewsAttachmentType)}>
+                            {NEWS_ATTACHMENT_TYPES.map((type) => <option key={type} value={type}>{attachmentTypeLabels[type]}</option>)}
+                          </select>
+                        </Field>
+                        <Field label="Urutan">
+                          <input type="number" step="1" className={inputClass} value={attachment.sort_order} onChange={(event) => updateAttachment(attachment.clientId, "sort_order", Number(event.target.value))} />
+                        </Field>
+                        <button type="button" onClick={() => removeAttachment(attachment.clientId)} className="sm:col-span-2 inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-red-200 px-4 text-[13px] font-semibold text-red-600 hover:bg-red-50">
+                          <Trash2 size={15} /> Hapus Lampiran
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </fieldset>
               <Field label="Penulis">
                 <input className={inputClass} value={form.penulis} onChange={(e) => updateField("penulis", e.target.value)} />
               </Field>

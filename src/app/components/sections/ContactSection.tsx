@@ -33,27 +33,37 @@ import {
 import { SectionHeader } from "./shared";
 import { contactContent, contactData } from "../../../data/contact";
 import { usePublicProfile } from "../../context/PublicProfileContext";
+import { createMailtoUrl, createWhatsAppUrl, GENERAL_WHATSAPP_MESSAGE } from "../../utils/contactLinks";
 
 const contactIcons = {
   address: MapPin,
   phone: Phone,
   email: Mail,
   hours: Clock,
+  instagram: Instagram,
+  website: Globe,
+  external: ExternalLink,
 };
 
-export default function ContactSection() {
+export default function ContactSection({ pageHeading = false }: { pageHeading?: boolean }) {
   const profile = usePublicProfile();
-  const phoneDigits = profile.phone.replace(/\D/g, "");
+  const whatsAppUrl = createWhatsAppUrl(profile.phone, GENERAL_WHATSAPP_MESSAGE);
+  const emailUrl = createMailtoUrl(profile.email);
   const contacts = [
-    { ...contactData[0], value: profile.address, link: null },
-    { ...contactData[1], value: profile.phone, link: phoneDigits ? `https://wa.me/${phoneDigits}` : null },
-    { ...contactData[2], value: profile.email, link: profile.email ? `mailto:${profile.email}` : null },
-    contactData[3],
+    { ...contactData[0], value: profile.address, link: null, external: false },
+    { ...contactData[1], value: profile.phone, link: whatsAppUrl || null, external: true },
+    { ...contactData[2], value: profile.email, link: emailUrl || null, external: false },
+    { ...contactData[3], value: profile.serviceHours, external: false },
+    ...(profile.instagramUrl ? [{ icon: "instagram" as const, label: "Instagram", value: "Instagram Padukuhan", link: profile.instagramUrl, external: true }] : []),
+    ...(profile.facebookUrl ? [{ icon: "external" as const, label: "Facebook", value: "Facebook Padukuhan", link: profile.facebookUrl, external: true }] : []),
+    ...(profile.youtubeUrl ? [{ icon: "external" as const, label: "YouTube", value: "YouTube Padukuhan", link: profile.youtubeUrl, external: true }] : []),
+    ...(profile.websiteUrl ? [{ icon: "website" as const, label: "Website", value: "Website Padukuhan", link: profile.websiteUrl, external: true }] : []),
   ];
   return (
     <section id="kontak" className="py-20 lg:py-24 bg-[#FFF9EC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
+          as={pageHeading ? "h1" : "h2"}
           label={contactContent.label}
           title={contactContent.title}
           description={contactContent.description}
@@ -63,7 +73,7 @@ export default function ContactSection() {
         <div className="grid lg:grid-cols-2 gap-8 mt-2">
           {/* Contact info */}
           <div className="space-y-3.5">
-            {contacts.map(({ icon, label, value, link }) => {
+            {contacts.map(({ icon, label, value, link, external }) => {
               const Icon = contactIcons[icon];
               return (
               <div key={label} className="flex gap-4 p-5 rounded-2xl bg-[#FFFEF9] border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.05)] hover:border-[#0D6F6B]/30 transition-colors">
@@ -73,7 +83,7 @@ export default function ContactSection() {
                 <div>
                   <div className="text-[11px] font-semibold text-[#7C8C8A] uppercase tracking-wide mb-0.5">{label}</div>
                   {link
-                    ? <a href={link} className="text-[13px] text-[#173F57] font-medium hover:text-[#0D6F6B] transition-colors">{value}</a>
+                    ? <a href={link} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className="rounded-sm text-[13px] text-[#173F57] font-medium hover:text-[#0D6F6B] hover:underline underline-offset-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D6F6B]">{value}</a>
                     : <p className="text-[13px] text-[#173F57] font-medium">{value}</p>
                   }
                 </div>

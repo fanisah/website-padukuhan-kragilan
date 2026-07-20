@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 export type AdminGalleryItem = {
-  id: number;
+  id: string;
   judul: string;
   deskripsi: string | null;
   foto_url: string;
@@ -52,7 +52,7 @@ export async function createGallery(input: AdminGalleryInput): Promise<AdminGall
   return data;
 }
 
-export async function updateGallery(id: number, input: AdminGalleryInput): Promise<AdminGalleryItem> {
+export async function updateGallery(id: string, input: AdminGalleryInput): Promise<AdminGalleryItem> {
   const { data, error } = await requireClient()
     .schema("public")
     .from("gallery")
@@ -65,7 +65,7 @@ export async function updateGallery(id: number, input: AdminGalleryInput): Promi
   return data;
 }
 
-export async function deleteGallery(id: number): Promise<void> {
+export async function deleteGallery(id: string): Promise<void> {
   const { error } = await requireClient()
     .schema("public")
     .from("gallery")

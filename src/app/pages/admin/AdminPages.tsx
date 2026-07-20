@@ -1,8 +1,4 @@
-import AdminPlaceholderPage from "./AdminPlaceholderPage";
-
-export function AdminDashboardPage() {
-  return <AdminPlaceholderPage title="Dashboard" description="Ringkasan area administrasi Padukuhan Kragilan." />;
-}
+export { default as AdminDashboardPage } from "./AdminDashboardPage";
 
 export { default as AdminNewsPage } from "./AdminNewsPage";
 
@@ -13,3 +9,9 @@ export { default as AdminUmkmPage } from "./AdminUmkmPage";
 export { default as AdminGalleryPage } from "./AdminGalleryPage";
 
 export { default as AdminProfilePage } from "./AdminProfilePage";
+
+export { default as AdminHomePage } from "./AdminHomePage";
+
+export { default as AdminPotencyPage } from "./AdminPotencyPage";
+
+export { default as AdminContactPage } from "./AdminContactPage";

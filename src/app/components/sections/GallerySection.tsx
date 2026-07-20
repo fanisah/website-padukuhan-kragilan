@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import {
   Menu,
   X,
@@ -59,7 +60,7 @@ function mapGallery(row: GalleryItem, index: number): GalleryUiItem {
   };
 }
 
-export default function GallerySection() {
+export default function GallerySection({ pageHeading = false }: { pageHeading?: boolean }) {
   const items = usePublishedCollection(localGalleryItems, getPublishedGallery, mapGallery);
   const [lb, setLb] = useState<string | null>(null);
 
@@ -67,6 +68,7 @@ export default function GallerySection() {
     <section id="galeri" className="py-20 lg:py-24 bg-[#FFFEF9]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
+          as={pageHeading ? "h1" : "h2"}
           label={galleryContent.label}
           title={galleryContent.title}
           description={galleryContent.description}
@@ -75,9 +77,12 @@ export default function GallerySection() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3" style={{ gridAutoRows: "200px" }}>
           {items.map((p, i) => (
-            <div
+            <button
+              type="button"
               key={i}
-              className={`overflow-hidden rounded-2xl cursor-pointer group relative bg-[#F5F7F4] border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.06)] ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
+              disabled={!p.src}
+              aria-label={p.src ? `Perbesar ${p.alt}` : undefined}
+              className={`overflow-hidden rounded-2xl relative bg-[#F5F7F4] border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.06)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D6F6B] ${p.src ? "group cursor-pointer" : "cursor-default"} ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
               onClick={() => p.src && setLb(p.src)}
             >
               {p.src ? (
@@ -85,26 +90,26 @@ export default function GallerySection() {
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-[#F5F7F4] text-[13px] font-semibold text-[#7C8C8A]">Gambar belum tersedia</div>
               )}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/24 transition-all duration-300 flex items-center justify-center">
+              {p.src && <div className="absolute inset-0 bg-black/0 group-hover:bg-black/24 transition-all duration-300 flex items-center justify-center">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-[#FFFEF9]/20 rounded-full p-2.5">
                   <Eye size={18} className="text-white" />
                 </div>
-              </div>
-            </div>
+              </div>}
+            </button>
           ))}
         </div>
 
         <div className="text-center mt-8">
-          <button className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[#D8E4DF] text-[13px] font-semibold text-[#173F57] hover:border-[#0D6F6B] hover:text-[#0D6F6B] transition-all">
+          <Link to="/galeri" className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-[#D8E4DF] text-[13px] font-semibold text-[#173F57] hover:border-[#0D6F6B] hover:text-[#0D6F6B] transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D6F6B]">
             {galleryContent.action} <ArrowRight size={14} />
-          </button>
+          </Link>
         </div>
       </div>
 
       {/* Lightbox */}
       {lb && (
         <div className="fixed inset-0 z-50 bg-black/92 flex items-center justify-center p-4 md:p-8" onClick={() => setLb(null)}>
-          <button className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-[#FFFEF9]/10 text-white hover:bg-[#FFFEF9]/20 transition-colors" onClick={() => setLb(null)}>
+          <button type="button" aria-label="Tutup galeri" className="absolute top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-[#FFFEF9]/10 text-white hover:bg-[#FFFEF9]/20 transition-colors" onClick={() => setLb(null)}>
             <X size={18} />
           </button>
           <img src={lb} alt="Foto galeri" className="max-w-full max-h-[90vh] rounded-xl object-contain" onClick={(e) => e.stopPropagation()} />

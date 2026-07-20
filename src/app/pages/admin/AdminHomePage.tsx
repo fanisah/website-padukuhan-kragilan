@@ -1,0 +1,22 @@
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { getProfileForAdmin, updateProfile } from "../../../services/adminProfile";
+import ImageUploader from "../../components/common/ImageUploader";
+
+type HomeForm = { logo_url: string; hero_image_url: string; hero_headline: string; hero_subheadline: string; deskripsi: string; about_image_url: string };
+const empty: HomeForm = { logo_url: "", hero_image_url: "", hero_headline: "", hero_subheadline: "", deskripsi: "", about_image_url: "" };
+const inputClass = "h-12 w-full rounded-xl border border-[#C8D5D0] bg-white px-4 text-[14px] text-[#173F57] outline-none focus:border-[#0D6F6B] focus:ring-2 focus:ring-[#0D6F6B]/15";
+
+export default function AdminHomePage() {
+  const [form, setForm] = useState(empty); const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false); const [message, setMessage] = useState(""); const [error, setError] = useState("");
+  useEffect(() => { let active = true; getProfileForAdmin().then((p) => active && setForm({ logo_url:p.logo_url??"", hero_image_url:p.hero_image_url??"", hero_headline:p.hero_headline??"", hero_subheadline:p.hero_subheadline??"", deskripsi:p.deskripsi??"", about_image_url:p.about_image_url??"" })).catch(() => active && setError("Informasi Beranda belum dapat dimuat.")).finally(() => active && setLoading(false)); return () => { active=false; }; }, []);
+  const change=(key:keyof HomeForm,value:string)=>setForm(c=>({...c,[key]:value}));
+  async function submit(event:FormEvent){event.preventDefault();setSaving(true);setMessage("");setError("");const nullable=(v:string)=>v.trim()||null;try{await updateProfile({logo_url:nullable(form.logo_url),hero_image_url:nullable(form.hero_image_url),hero_headline:nullable(form.hero_headline),hero_subheadline:nullable(form.hero_subheadline),deskripsi:nullable(form.deskripsi),about_image_url:nullable(form.about_image_url)});setMessage("Beranda berhasil diperbarui.");}catch(cause){if(import.meta.env.DEV)console.error(cause);setError("Informasi Beranda tidak dapat disimpan. Silakan coba kembali.");}finally{setSaving(false);}}
+  if(loading)return <p className="rounded-2xl border bg-white p-10 text-center text-sm">Memuat Beranda…</p>;
+  return <section className="max-w-3xl"><h1 className="text-[1.75rem] font-bold text-[#173F57]">Beranda</h1><p className="mt-2 text-sm text-[#5F6F72]">Informasi di halaman ini akan tampil pada halaman utama website.</p>{message&&<p className="mt-6 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-700">{message}</p>}{error&&<p className="mt-6 rounded-xl bg-red-50 p-4 text-sm text-red-700">{error}</p>}<form onSubmit={submit} className="mt-6 space-y-6">
+    <Section title="Logo Website"><ImageUploader value={form.logo_url} onChange={url=>change("logo_url",url)} label="Logo Website" folder="profile" disabled={saving}/><p className="text-xs leading-relaxed text-[#5F6F72]">Logo ini digunakan di seluruh website dan halaman administrasi.</p></Section>
+    <Section title="Hero Beranda"><ImageUploader value={form.hero_image_url} onChange={url=>change("hero_image_url",url)} label="Gambar Hero" folder="profile" disabled={saving}/><Field label="Judul Hero"><input className={inputClass} value={form.hero_headline} onChange={e=>change("hero_headline",e.target.value)}/></Field><Field label="Deskripsi Hero"><textarea className={`${inputClass} min-h-28 py-3`} value={form.hero_subheadline} onChange={e=>change("hero_subheadline",e.target.value)}/></Field></Section>
+    <Section title="Tentang Kami Singkat"><Field label="Deskripsi Singkat"><textarea className={`${inputClass} min-h-32 py-3`} value={form.deskripsi} onChange={e=>change("deskripsi",e.target.value)}/></Field><ImageUploader value={form.about_image_url} onChange={url=>change("about_image_url",url)} label="Gambar Tentang Kami" folder="profile" disabled={saving}/></Section>
+    <button disabled={saving} className="min-h-12 w-full rounded-xl bg-[#0D6F6B] font-bold text-white disabled:opacity-60">{saving?"Menyimpan…":"Simpan Perubahan"}</button></form></section>;
+}
+function Section({title,children}:{title:string;children:ReactNode}){return <fieldset className="space-y-5 rounded-2xl border border-[#D8E4DF] bg-white p-5 sm:p-7"><legend className="px-2 font-bold text-[#173F57]">{title}</legend>{children}</fieldset>}
+function Field({label,children}:{label:string;children:ReactNode}){return <label className="block"><span className="mb-2 block text-sm font-semibold text-[#294B55]">{label}</span>{children}</label>}

@@ -94,7 +94,7 @@ export default function AdminUmkmPage() {
   const [items, setItems] = useState<AdminUmkm[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<AdminUmkm | null>(null);
   const [form, setForm] = useState<UmkmFormState>(emptyForm);

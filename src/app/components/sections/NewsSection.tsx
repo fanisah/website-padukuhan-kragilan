@@ -63,7 +63,7 @@ function mapNews(row: News): NewsItem {
   };
 }
 
-export default function NewsSection({ limit }: { limit?: number }) {
+export default function NewsSection({ limit, pageHeading = false }: { limit?: number; pageHeading?: boolean }) {
   const items = usePublishedCollection(newsData, getPublishedNews, mapNews);
   const visibleItems = limit ? items.slice(0, limit) : items;
 
@@ -72,6 +72,7 @@ export default function NewsSection({ limit }: { limit?: number }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-10">
           <SectionHeader
+            as={pageHeading ? "h1" : "h2"}
             label={newsContent.label}
             title={newsContent.title}
             description={newsContent.description}

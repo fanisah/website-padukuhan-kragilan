@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 export type News = {
-  id: number;
+  id: string;
   judul: string;
   slug: string;
   ringkasan: string | null;

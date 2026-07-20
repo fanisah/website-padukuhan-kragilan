@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 export type Agenda = {
-  id: number;
+  id: string;
   judul: string;
   deskripsi: string | null;
   tanggal: string;

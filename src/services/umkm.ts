@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 export type Umkm = {
-  id: number;
+  id: string;
   nama: string;
   kategori: string | null;
   deskripsi: string | null;

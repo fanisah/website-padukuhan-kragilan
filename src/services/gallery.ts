@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 export type GalleryItem = {
-  id: number;
+  id: string;
   judul: string;
   deskripsi: string | null;
   foto_url: string;

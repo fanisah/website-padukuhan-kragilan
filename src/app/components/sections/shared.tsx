@@ -114,18 +114,21 @@ export function SectionHeader({
   title,
   description,
   center = false,
+  as = "h2",
 }: {
   label:        string;
   title:        string;
   description?: string;
   center?:      boolean;
+  as?:          "h1" | "h2";
 }) {
+  const Heading = as;
   return (
     <div className={`mb-10 ${center ? "text-center" : ""}`}>
       <Badge variant="primary">{label}</Badge>
-      <h2 className={`mt-3 text-[2rem] md:text-[2.35rem] font-bold text-[#173F57] leading-[1.2] tracking-[-0.022em] ${center ? "mx-auto" : ""}`}>
+      <Heading className={`mt-3 text-[2rem] md:text-[2.35rem] font-bold text-[#173F57] leading-[1.2] tracking-[-0.022em] ${center ? "mx-auto" : ""}`}>
         {title}
-      </h2>
+      </Heading>
       {description && (
         <p className={`mt-3 text-[#5F6F72] text-[1.02rem] leading-relaxed max-w-2xl ${center ? "mx-auto" : ""}`}>
           {description}

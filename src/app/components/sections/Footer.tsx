@@ -19,7 +19,7 @@ import {
   Calendar,
   Zap,
 } from "lucide-react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 // â”€â”€â”€ TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Primary:      #0D6F6B  Deep Teal
@@ -35,6 +35,7 @@ import { OrnamentDivider } from "./shared";
 import { navigationLinks } from "../../../data/navigation";
 import { usePublicProfile } from "../../context/PublicProfileContext";
 import KragilanLogo from "../brand/KragilanLogo";
+import { createMailtoUrl, createWhatsAppUrl, GENERAL_WHATSAPP_MESSAGE } from "../../utils/contactLinks";
 
 function Pranadhara20px() {
   // Subtle placeholder for the Pranadhara logo at ~20px
@@ -47,9 +48,9 @@ function Pranadhara20px() {
 }
 
 export default function Footer() {
-  const navigate = useNavigate();
   const profile = usePublicProfile();
-  const phoneDigits = profile.phone.replace(/\D/g, "");
+  const whatsAppUrl = createWhatsAppUrl(profile.phone, GENERAL_WHATSAPP_MESSAGE);
+  const emailUrl = createMailtoUrl(profile.email);
   return (
     <footer className="bg-[#123E55]">
       {/* Ornament band â€” teal strip */}
@@ -63,9 +64,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-5">
             <KragilanLogo inverse className="mb-5" />
-            <p className="text-[12.5px] text-white/45 leading-relaxed max-w-xs">
-              {profile.description}
-            </p>
+            {profile.description && <p className="max-w-xs text-[12.5px] leading-relaxed text-white/45">{profile.description}</p>}
           </div>
 
           {/* Navigation */}
@@ -74,9 +73,9 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {navigationLinks.map((l) => (
                 <li key={l.href}>
-                  <button onClick={() => navigate(l.path)} className="text-[12.5px] text-white/40 hover:text-white/80 transition-colors">
+                  <Link to={l.path} className="rounded-sm text-[12.5px] text-white/40 hover:text-white/80 transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F6C343]">
                     {l.label}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -88,20 +87,22 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex gap-2.5">
                 <MapPin size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" />
-                <span className="text-[12.5px] text-white/40 leading-snug">{profile.address}</span>
+                {profile.mapsUrl ? <a href={profile.mapsUrl} target="_blank" rel="noopener noreferrer" className="text-[12.5px] leading-snug text-white/40 transition-colors hover:text-white/75">{profile.address}</a> : <span className="text-[12.5px] leading-snug text-white/40">{profile.address}</span>}
               </li>
               <li>
-                <a href={phoneDigits ? `https://wa.me/${phoneDigits}` : undefined} className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
+                {whatsAppUrl ? <a href={whatsAppUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
                   <Phone size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> {profile.phone}
-                </a>
+                </a> : <span className="flex gap-2.5 text-[12.5px] text-white/40"><Phone size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> {profile.phone}</span>}
               </li>
               <li>
-                <a href={`mailto:${profile.email}`} className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
+                {emailUrl ? <a href={emailUrl} className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors">
                   <Mail size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> {profile.email}
-                </a>
+                </a> : <span className="flex gap-2.5 text-[12.5px] text-white/40"><Mail size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> {profile.email}</span>}
               </li>
               {profile.instagramUrl && <li><a href={profile.instagramUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><Instagram size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> Instagram</a></li>}
               {profile.youtubeUrl && <li><a href={profile.youtubeUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><ExternalLink size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> YouTube</a></li>}
+              {profile.facebookUrl && <li><a href={profile.facebookUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><ExternalLink size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> Facebook</a></li>}
+              {profile.websiteUrl && <li><a href={profile.websiteUrl} target="_blank" rel="noopener noreferrer" className="flex gap-2.5 text-[12.5px] text-white/40 hover:text-white/75 transition-colors"><Globe size={13} className="text-[#F6C343] flex-shrink-0 mt-0.5" /> Website</a></li>}
             </ul>
           </div>
         </div>

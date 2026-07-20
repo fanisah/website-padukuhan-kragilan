@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { Link, NavLink } from "react-router";
 import {
   Menu,
   X,
@@ -37,8 +37,6 @@ import { siteProfile } from "../../../data/profile";
 import KragilanLogo from "../brand/KragilanLogo";
 
 export default function Header() {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
   const [open,     setOpen]     = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -48,11 +46,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  function handleLink(path: string) {
-    setOpen(false);
-    navigate(path);
-  }
-
   return (
     <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
       scrolled ? "bg-[#FFFEF9]/98 backdrop-blur-sm shadow-[0_1px_0_0_#D8E4DF]" : "bg-[#FFF9EC]/92 backdrop-blur-sm"
@@ -61,31 +54,31 @@ export default function Header() {
         <div className="flex items-center justify-between h-[62px]">
 
           {/* Logo */}
-          <button onClick={() => handleLink("/")} className="group rounded-xl py-1" aria-label="Kembali ke beranda Padukuhan Kragilan">
+          <Link to="/" className="group rounded-xl py-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D6F6B]" aria-label="Kembali ke beranda Padukuhan Kragilan">
             <KragilanLogo />
-          </button>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-0.5">
             {navigationLinks.map((l) => (
-              <button
+              <NavLink
                 key={l.href}
-                onClick={() => handleLink(l.path)}
-                aria-current={pathname === l.path || (l.path !== "/" && pathname.startsWith(`${l.path}/`)) ? "page" : undefined}
-                className={`px-3.5 py-2 text-[13px] font-semibold rounded-xl transition-all ${pathname === l.path || (l.path !== "/" && pathname.startsWith(`${l.path}/`)) ? "bg-[#DDEFE8] text-[#0D6F6B]" : "text-[#5F6F72] hover:text-[#0D6F6B] hover:bg-[#DDEFE8]/55"}`}
+                to={l.path}
+                end={l.path === "/"}
+                className={({ isActive }) => `px-3.5 py-2 text-[13px] font-semibold rounded-xl transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D6F6B] ${isActive ? "bg-[#DDEFE8] text-[#0D6F6B]" : "text-[#5F6F72] hover:text-[#0D6F6B] hover:bg-[#DDEFE8]/55"}`}
               >
                 {l.label}
-              </button>
+              </NavLink>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => handleLink("/kontak")}
+            <Link
+              to="/kontak"
               className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-[10px] bg-[#0D6F6B] text-white text-[13px] font-semibold hover:bg-[#095B58] transition-colors"
             >
               {siteProfile.contactAction}
-            </button>
+            </Link>
             <button
               onClick={() => setOpen(!open)}
               className="lg:hidden p-2 rounded-lg text-[#173F57] hover:bg-[#F5F7F4] transition-colors"
@@ -103,22 +96,24 @@ export default function Header() {
         <div className="lg:hidden border-t border-[#D8E4DF] bg-[#FFFEF9] px-4 pt-2 pb-5">
           <nav className="flex flex-col gap-0.5">
             {navigationLinks.map((l) => (
-              <button
+              <NavLink
                 key={l.href}
-                onClick={() => handleLink(l.path)}
-                aria-current={pathname === l.path || (l.path !== "/" && pathname.startsWith(`${l.path}/`)) ? "page" : undefined}
-                className={`min-h-11 text-left px-3 py-2.5 text-[14px] font-semibold rounded-xl transition-all ${pathname === l.path || (l.path !== "/" && pathname.startsWith(`${l.path}/`)) ? "bg-[#DDEFE8] text-[#0D6F6B]" : "text-[#49636A] hover:text-[#0D6F6B] hover:bg-[#DDEFE8]/55"}`}
+                to={l.path}
+                end={l.path === "/"}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) => `min-h-11 text-left px-3 py-2.5 text-[14px] font-semibold rounded-xl transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D6F6B] ${isActive ? "bg-[#DDEFE8] text-[#0D6F6B]" : "text-[#49636A] hover:text-[#0D6F6B] hover:bg-[#DDEFE8]/55"}`}
               >
                 {l.label}
-              </button>
+              </NavLink>
             ))}
           </nav>
-          <button
-            onClick={() => handleLink("/kontak")}
+          <Link
+            to="/kontak"
+            onClick={() => setOpen(false)}
             className="mt-3 w-full py-3 rounded-[10px] bg-[#0D6F6B] text-white text-[13.5px] font-semibold"
           >
             {siteProfile.contactAction}
-          </button>
+          </Link>
         </div>
       )}
     </header>

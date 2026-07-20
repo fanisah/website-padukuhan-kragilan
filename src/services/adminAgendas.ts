@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 
 export type AdminAgenda = {
-  id: number;
+  id: string;
   judul: string;
   deskripsi: string | null;
   tanggal: string;
@@ -56,7 +56,7 @@ export async function createAgenda(input: AdminAgendaInput): Promise<AdminAgenda
   return data;
 }
 
-export async function updateAgenda(id: number, input: AdminAgendaInput): Promise<AdminAgenda> {
+export async function updateAgenda(id: string, input: AdminAgendaInput): Promise<AdminAgenda> {
   const { data, error } = await requireClient()
     .schema("public")
     .from("agendas")
@@ -69,7 +69,7 @@ export async function updateAgenda(id: number, input: AdminAgendaInput): Promise
   return data;
 }
 
-export async function deleteAgenda(id: number): Promise<void> {
+export async function deleteAgenda(id: string): Promise<void> {
   const { error } = await requireClient()
     .schema("public")
     .from("agendas")

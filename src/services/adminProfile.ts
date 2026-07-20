@@ -1,7 +1,7 @@
 import { supabase } from "../lib/supabase";
 import type { Profile } from "./profile";
 
-export type AdminProfileInput = Omit<Profile, "id" | "updated_at">;
+export type AdminProfileInput = Partial<Omit<Profile, "id" | "updated_at">>;
 
 function requireClient() {
   if (!supabase) throw new Error("Supabase admin client is unavailable.");
