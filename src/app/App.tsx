@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import StrengthsPage from "./pages/StrengthsPage";
 import UmkmPage from "./pages/UmkmPage";
+import UmkmDetailPage from "./pages/UmkmDetailPage";
 import NewsPage from "./pages/NewsPage";
 import NewsDetailPage from "./pages/NewsDetailPage";
 import AgendaPage from "./pages/AgendaPage";
@@ -12,6 +13,7 @@ import ContactPage from "./pages/ContactPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { AuthProvider } from "./auth/AuthProvider";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import SuperAdminRoute from "./auth/SuperAdminRoute";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import {
@@ -24,6 +26,7 @@ import {
   AdminPotencyPage,
   AdminProfilePage,
   AdminUmkmPage,
+  AdminUsersPage,
 } from "./pages/admin/AdminPages";
 import { PublicProfileProvider } from "./context/PublicProfileContext";
 
@@ -45,6 +48,9 @@ export default function App() {
               <Route path="umkm" element={<AdminUmkmPage />} />
               <Route path="galeri" element={<AdminGalleryPage />} />
               <Route path="kontak" element={<AdminContactPage />} />
+              <Route element={<SuperAdminRoute />}>
+                <Route path="administrator" element={<AdminUsersPage />} />
+              </Route>
             </Route>
           </Route>
 
@@ -53,6 +59,7 @@ export default function App() {
             <Route path="profil" element={<ProfilePage />} />
             <Route path="potensi" element={<StrengthsPage />} />
             <Route path="umkm" element={<UmkmPage />} />
+            <Route path="umkm/:slug" element={<UmkmDetailPage />} />
             <Route path="berita" element={<NewsPage />} />
             <Route path="berita/:slug" element={<NewsDetailPage />} />
             <Route path="agenda" element={<AgendaPage />} />

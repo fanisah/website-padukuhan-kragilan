@@ -32,7 +32,7 @@ import {
 // Text:         #173F57
 // Muted:        #5F6F72
 // Border:       #D8E4DF
-import { SectionHeader } from "./shared";
+import { SectionHeader, SectionOrnament } from "./shared";
 import { galleryContent, galleryData } from "../../../data/gallery";
 import { usePublishedCollection } from "../../hooks/usePublishedCollection";
 import { getPublishedGallery, type GalleryItem } from "../../../services/gallery";
@@ -65,8 +65,9 @@ export default function GallerySection({ pageHeading = false }: { pageHeading?: 
   const [lb, setLb] = useState<string | null>(null);
 
   return (
-    <section id="galeri" className="py-20 lg:py-24 bg-[#FFFEF9]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="galeri" className="relative overflow-hidden bg-[#FFFEF9] py-20 lg:py-24">
+      <SectionOrnament position="top-right" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           as={pageHeading ? "h1" : "h2"}
           label={galleryContent.label}
@@ -82,11 +83,11 @@ export default function GallerySection({ pageHeading = false }: { pageHeading?: 
               key={i}
               disabled={!p.src}
               aria-label={p.src ? `Perbesar ${p.alt}` : undefined}
-              className={`overflow-hidden rounded-2xl relative bg-[#F5F7F4] border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.06)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D6F6B] ${p.src ? "group cursor-pointer" : "cursor-default"} ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
+              className={`relative overflow-hidden rounded-3xl border border-[#D8E4DF] bg-[#F5F7F4] shadow-[0_10px_28px_rgba(23,74,112,0.07)] transition-[transform,border-color,box-shadow] duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D6F6B] ${p.src ? "group cursor-pointer hover:-translate-y-1 hover:border-[#0D6F6B]/25 hover:shadow-[0_18px_40px_rgba(23,74,112,0.12)]" : "cursor-default"} ${p.big ? "md:col-span-2 md:row-span-2" : ""}`}
               onClick={() => p.src && setLb(p.src)}
             >
               {p.src ? (
-                <img src={p.src} alt={p.alt} className="h-full w-full object-contain p-1.5" />
+                <img src={p.src} alt={p.alt} className="h-full w-full object-contain p-2.5" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-[#F5F7F4] text-[13px] font-semibold text-[#7C8C8A]">Gambar belum tersedia</div>
               )}

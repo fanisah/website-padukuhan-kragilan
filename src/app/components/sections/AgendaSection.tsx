@@ -30,7 +30,7 @@ import {
 // Text:         #173F57
 // Muted:        #5F6F72
 // Border:       #D8E4DF
-import { Badge, SectionHeader } from "./shared";
+import { Badge, SectionHeader, SectionOrnament } from "./shared";
 import { agendaContent, agendaData } from "../../../data/agenda";
 import { usePublishedCollection } from "../../hooks/usePublishedCollection";
 import { getPublishedAgendas, type Agenda } from "../../../services/agendas";
@@ -76,8 +76,9 @@ export default function AgendaSection({ pageHeading = false }: { pageHeading?: b
   const whatsAppUrl = createWhatsAppUrl(profile.phone, AGENDA_WHATSAPP_MESSAGE);
 
   return (
-    <section id="agenda" className="py-20 lg:py-24 bg-[#FFF9EC]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="agenda" className="relative overflow-hidden bg-[#FFF9EC] py-20 lg:py-24">
+      <SectionOrnament position="bottom-left" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-[1fr_1.15fr] gap-14 items-start">
 
           <div>
@@ -88,7 +89,7 @@ export default function AgendaSection({ pageHeading = false }: { pageHeading?: b
               description={agendaContent.description}
             />
             {/* Callout box */}
-            <div className="p-5 rounded-2xl bg-[#0D6F6B]/6 border border-[#0D6F6B]/18">
+            <div className="rounded-3xl border border-[#0D6F6B]/18 bg-[#0D6F6B]/6 p-5 shadow-[0_10px_28px_rgba(23,74,112,0.05)]">
               <div className="flex items-center gap-3 mb-2.5">
                 <Calendar size={15} className="text-[#0D6F6B]" />
                 <span className="text-[13px] font-semibold text-[#0D6F6B]">Ikuti agenda kami</span>
@@ -108,9 +109,9 @@ export default function AgendaSection({ pageHeading = false }: { pageHeading?: b
             {items.map((item, i) => (
               <div
                 key={i}
-                className={`flex gap-4 p-4 rounded-2xl transition-all ${
+                className={`flex gap-4 rounded-3xl p-4 transition-[transform,border-color,box-shadow] duration-300 ${
                   item.upcoming
-                    ? "bg-[#FFFEF9] border border-[#D8E4DF] hover:border-[#0D6F6B]/30 hover:shadow-[0_2px_12px_rgba(13,111,107,0.07)]"
+                    ? "bg-[#FFFEF9] border border-[#D8E4DF] shadow-[0_8px_22px_rgba(23,74,112,0.05)] hover:-translate-y-0.5 hover:border-[#0D6F6B]/30 hover:shadow-[0_14px_30px_rgba(13,111,107,0.09)]"
                     : "bg-[#F9F9F9] opacity-52"
                 }`}
               >

@@ -124,7 +124,7 @@ export function SectionHeader({
 }) {
   const Heading = as;
   return (
-    <div className={`mb-10 ${center ? "text-center" : ""}`}>
+    <div className={`relative mb-10 ${center ? "text-center" : ""}`}>
       <Badge variant="primary">{label}</Badge>
       <Heading className={`mt-3 text-[2rem] md:text-[2.35rem] font-bold text-[#173F57] leading-[1.2] tracking-[-0.022em] ${center ? "mx-auto" : ""}`}>
         {title}
@@ -136,6 +136,23 @@ export function SectionHeader({
       )}
       <OrnamentDivider align={center ? "center" : "left"} className="mt-5" />
     </div>
+  );
+}
+
+export function SectionOrnament({ position = "top-right" }: { position?: "top-right" | "bottom-left" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 220 220"
+      className={`pointer-events-none absolute hidden h-52 w-52 text-[#0D6F6B] opacity-[0.055] sm:block lg:h-64 lg:w-64 ${position === "top-right" ? "-right-16 -top-16" : "-bottom-20 -left-16 rotate-180"}`}
+      fill="none"
+    >
+      <path d="M110 18c8 42 38 72 82 82-44 10-74 40-82 82-8-42-38-72-82-82 44-10 74-40 82-82Z" stroke="currentColor" strokeWidth="2" />
+      <path d="M110 48c5 27 25 47 54 52-29 6-49 25-54 53-5-28-25-47-54-53 29-5 49-25 54-52Z" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="110" cy="100" r="20" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M110 80c9 8 16 12 30 20-14 8-21 12-30 20-9-8-16-12-30-20 14-8 21-12 30-20Z" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M28 100h42M150 100h42M110 18v42M110 140v42" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
+    </svg>
   );
 }
 

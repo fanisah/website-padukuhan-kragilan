@@ -4,6 +4,7 @@ import ImageUploader from "../../components/common/ImageUploader";
 import { normalizeImagePosition } from "../../utils/imageFocalPoint";
 import {
   createUmkm,
+  createUmkmSlug,
   deleteUmkm,
   getAllUmkm,
   updateUmkm,
@@ -12,12 +13,16 @@ import {
 } from "../../../services/adminUmkm";
 
 type UmkmFormState = {
+  slug: string;
   nama: string;
   kategori: string;
   alamat: string;
   maps_url: string;
   instagram_url: string;
   whatsapp: string;
+  featured_products: string;
+  shopee: string;
+  operating_days: string;
   deskripsi: string;
   foto_url: string;
   image_position_x: number;
@@ -26,12 +31,16 @@ type UmkmFormState = {
 };
 
 const emptyForm: UmkmFormState = {
+  slug: "",
   nama: "",
   kategori: "",
   alamat: "",
   maps_url: "",
   instagram_url: "",
   whatsapp: "",
+  featured_products: "",
+  shopee: "",
+  operating_days: "",
   deskripsi: "",
   foto_url: "",
   image_position_x: 50,
@@ -49,12 +58,16 @@ function nullable(value: string) {
 function toPayload(form: UmkmFormState): AdminUmkmInput {
   const position = normalizeImagePosition(form.image_position_x, form.image_position_y);
   return {
+    slug: createUmkmSlug(form.slug),
     nama: form.nama.trim(),
     kategori: form.kategori.trim(),
     alamat: nullable(form.alamat),
     maps_url: nullable(form.maps_url),
     instagram_url: nullable(form.instagram_url),
     whatsapp: nullable(form.whatsapp),
+    featured_products: nullable(form.featured_products),
+    shopee: nullable(form.shopee),
+    operating_days: nullable(form.operating_days),
     deskripsi: nullable(form.deskripsi),
     foto_url: nullable(form.foto_url),
     image_position_x: position.x,
@@ -66,12 +79,16 @@ function toPayload(form: UmkmFormState): AdminUmkmInput {
 function toForm(item: AdminUmkm): UmkmFormState {
   const position = normalizeImagePosition(item.image_position_x, item.image_position_y);
   return {
+    slug: item.slug ?? createUmkmSlug(item.nama),
     nama: item.nama ?? "",
     kategori: item.kategori ?? "",
     alamat: item.alamat ?? "",
     maps_url: item.maps_url ?? "",
     instagram_url: item.instagram_url ?? "",
     whatsapp: item.whatsapp ?? "",
+    featured_products: item.featured_products ?? "",
+    shopee: item.shopee ?? "",
+    operating_days: item.operating_days ?? "",
     deskripsi: item.deskripsi ?? "",
     foto_url: item.foto_url ?? "",
     image_position_x: position.x,
@@ -101,6 +118,7 @@ export default function AdminUmkmPage() {
   const [validation, setValidation] = useState<Record<string, string>>({});
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
 
   async function refreshList() {
     const records = await getAllUmkm();
@@ -131,6 +149,7 @@ export default function AdminUmkmPage() {
     setForm(emptyForm);
     setValidation({});
     setErrorMessage("");
+    setSlugManuallyEdited(false);
     setModalOpen(true);
   }
 
@@ -139,6 +158,7 @@ export default function AdminUmkmPage() {
     setForm(toForm(item));
     setValidation({});
     setErrorMessage("");
+    setSlugManuallyEdited(true);
     setModalOpen(true);
   }
 
@@ -151,7 +171,13 @@ export default function AdminUmkmPage() {
     key: Key,
     value: UmkmFormState[Key],
   ) {
-    setForm((current) => ({ ...current, [key]: value }));
+    setForm((current) => {
+      const next = { ...current, [key]: value };
+      if (key === "nama" && !slugManuallyEdited) {
+        next.slug = createUmkmSlug(String(value));
+      }
+      return next;
+    });
     if (validation[key]) {
       setValidation((current) => ({ ...current, [key]: "" }));
     }
@@ -162,6 +188,7 @@ export default function AdminUmkmPage() {
     const nextValidation: Record<string, string> = {};
     if (!form.nama.trim()) nextValidation.nama = "Nama wajib diisi.";
     if (!form.kategori.trim()) nextValidation.kategori = "Kategori wajib diisi.";
+    if (!form.slug.trim()) nextValidation.slug = "Slug wajib diisi.";
     setValidation(nextValidation);
     if (Object.keys(nextValidation).length > 0) return;
 
@@ -179,8 +206,8 @@ export default function AdminUmkmPage() {
       }
       await refreshList();
       setModalOpen(false);
-    } catch {
-      setErrorMessage("Data UMKM belum dapat disimpan. Silakan coba lagi.");
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Data UMKM belum dapat disimpan. Silakan coba lagi.");
     } finally {
       setSaving(false);
     }
@@ -321,27 +348,23 @@ export default function AdminUmkmPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="mt-7 grid gap-5 sm:grid-cols-2">
-              <Field label="Nama" required error={validation.nama}>
+              <Field label="Nama Usaha" required error={validation.nama}>
                 <input className={inputClass} value={form.nama} onChange={(e) => updateField("nama", e.target.value)} />
               </Field>
               <Field label="Kategori" required error={validation.kategori}>
                 <input className={inputClass} value={form.kategori} onChange={(e) => updateField("kategori", e.target.value)} />
               </Field>
-              <Field label="Alamat">
-                <input className={inputClass} value={form.alamat} onChange={(e) => updateField("alamat", e.target.value)} />
+              <Field label="Slug" required error={validation.slug} className="sm:col-span-2">
+                <input
+                  className={inputClass}
+                  value={form.slug}
+                  onChange={(e) => {
+                    setSlugManuallyEdited(true);
+                    updateField("slug", createUmkmSlug(e.target.value));
+                  }}
+                  placeholder="nama-usaha"
+                />
               </Field>
-              <Field label="Google Maps URL">
-                <input type="url" className={inputClass} value={form.maps_url} onChange={(e) => updateField("maps_url", e.target.value)} />
-              </Field>
-              <Field label="Instagram URL">
-                <input type="url" className={inputClass} value={form.instagram_url} onChange={(e) => updateField("instagram_url", e.target.value)} />
-              </Field>
-              <Field label="WhatsApp">
-                <input className={inputClass} value={form.whatsapp} onChange={(e) => updateField("whatsapp", e.target.value)} />
-              </Field>
-              <div className="sm:col-span-2">
-                <ImageUploader value={form.foto_url} onChange={(url) => updateField("foto_url", url)} label="Foto" folder="umkm" disabled={saving} />
-              </div>
               <Field label="Deskripsi" className="sm:col-span-2">
                 <textarea
                   className={`${inputClass} min-h-28 resize-y py-3`}
@@ -349,6 +372,30 @@ export default function AdminUmkmPage() {
                   onChange={(e) => updateField("deskripsi", e.target.value)}
                 />
               </Field>
+              <Field label="Produk Unggulan" className="sm:col-span-2">
+                <textarea className={`${inputClass} min-h-24 resize-y py-3`} value={form.featured_products} onChange={(e) => updateField("featured_products", e.target.value)} />
+              </Field>
+              <Field label="WhatsApp">
+                <input inputMode="tel" className={inputClass} value={form.whatsapp} onChange={(e) => updateField("whatsapp", e.target.value)} />
+              </Field>
+              <Field label="Instagram">
+                <input type="url" className={inputClass} value={form.instagram_url} onChange={(e) => updateField("instagram_url", e.target.value)} />
+              </Field>
+              <Field label="Shopee">
+                <input type="url" className={inputClass} value={form.shopee} onChange={(e) => updateField("shopee", e.target.value)} />
+              </Field>
+              <Field label="Hari Operasional">
+                <input className={inputClass} value={form.operating_days} onChange={(e) => updateField("operating_days", e.target.value)} />
+              </Field>
+              <Field label="Alamat" className="sm:col-span-2">
+                <textarea className={`${inputClass} min-h-24 resize-y py-3`} value={form.alamat} onChange={(e) => updateField("alamat", e.target.value)} />
+              </Field>
+              <Field label="Link Google Maps" className="sm:col-span-2">
+                <input type="url" className={inputClass} value={form.maps_url} onChange={(e) => updateField("maps_url", e.target.value)} />
+              </Field>
+              <div className="sm:col-span-2">
+                <ImageUploader value={form.foto_url} onChange={(url) => updateField("foto_url", url)} label="Foto Usaha" folder="umkm" disabled={saving} />
+              </div>
 
               <label className="sm:col-span-2 flex min-h-12 items-center gap-3 rounded-xl bg-[#FFF9EC] px-4 text-[14px] font-semibold text-[#294B55]">
                 <input

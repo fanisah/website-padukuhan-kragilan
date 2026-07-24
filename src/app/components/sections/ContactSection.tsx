@@ -30,7 +30,7 @@ import {
 // Text:         #173F57
 // Muted:        #5F6F72
 // Border:       #D8E4DF
-import { SectionHeader } from "./shared";
+import { SectionHeader, SectionOrnament } from "./shared";
 import { contactContent, contactData } from "../../../data/contact";
 import { usePublicProfile } from "../../context/PublicProfileContext";
 import { createMailtoUrl, createWhatsAppUrl, GENERAL_WHATSAPP_MESSAGE } from "../../utils/contactLinks";
@@ -60,8 +60,9 @@ export default function ContactSection({ pageHeading = false }: { pageHeading?: 
     ...(profile.websiteUrl ? [{ icon: "website" as const, label: "Website", value: "Website Padukuhan", link: profile.websiteUrl, external: true }] : []),
   ];
   return (
-    <section id="kontak" className="py-20 lg:py-24 bg-[#FFF9EC]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="kontak" className="relative overflow-hidden bg-[#FFFBF2] py-20 lg:py-24">
+      <SectionOrnament position="top-right" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           as={pageHeading ? "h1" : "h2"}
           label={contactContent.label}
@@ -76,7 +77,7 @@ export default function ContactSection({ pageHeading = false }: { pageHeading?: 
             {contacts.map(({ icon, label, value, link, external }) => {
               const Icon = contactIcons[icon];
               return (
-              <div key={label} className="flex gap-4 p-5 rounded-2xl bg-[#FFFEF9] border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.05)] hover:border-[#0D6F6B]/30 transition-colors">
+              <div key={label} className="flex gap-4 rounded-3xl border border-[#D8E4DF] bg-[#FFFEF9] p-5 shadow-[0_8px_24px_rgba(23,74,112,0.06)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-[#0D6F6B]/30 hover:shadow-[0_14px_30px_rgba(23,74,112,0.09)]">
                 <div className="w-10 h-10 rounded-xl bg-[#0D6F6B]/10 flex items-center justify-center flex-shrink-0">
                   <Icon size={16} className="text-[#0D6F6B]" />
                 </div>
@@ -93,7 +94,7 @@ export default function ContactSection({ pageHeading = false }: { pageHeading?: 
           </div>
 
           {/* Map placeholder */}
-          <div className="rounded-2xl border border-[#D8E4DF] bg-[#FFFEF9] flex flex-col items-center justify-center gap-4 min-h-[380px]">
+          <div className="flex min-h-[380px] flex-col items-center justify-center gap-4 rounded-3xl border border-[#D8E4DF] bg-[#FFFEF9] shadow-[0_12px_32px_rgba(23,74,112,0.07)]">
             <div className="w-14 h-14 rounded-2xl bg-[#0D6F6B]/10 flex items-center justify-center">
               <MapPin size={24} className="text-[#0D6F6B]" />
             </div>

@@ -9,6 +9,7 @@ import {
   LogOut,
   Store,
   UserRound,
+  UsersRound,
 } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router";
 import { useAuth } from "../auth/AuthProvider";
@@ -34,8 +35,11 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
   }`;
 
 export default function AdminLayout() {
-  const { user, signOut } = useAuth();
+  const { user, role, isSuperAdmin, signOut } = useAuth();
   const navigate = useNavigate();
+  const visibleLinks = isSuperAdmin
+    ? [...adminLinks, { label: "Administrator", path: "/admin/administrator", icon: UsersRound }]
+    : adminLinks;
 
   async function handleLogout() {
     await signOut();
@@ -53,9 +57,10 @@ export default function AdminLayout() {
             <KragilanLogo className="mb-3" />
             <p className="text-[13px] font-bold">Administrasi</p>
             <p className="mt-1 truncate text-[12px] text-[#7C8C8A]">{user?.email}</p>
+            <p className="mt-1 text-[11px] font-semibold text-[#0D6F6B]">{role === "super_admin" ? "Super Admin" : "Editor"}</p>
           </div>
           <nav className="flex flex-1 flex-col gap-2" aria-label="Navigasi admin">
-            {adminLinks.map(({ label, path, icon: Icon, end }) => (
+            {visibleLinks.map(({ label, path, icon: Icon, end }) => (
               <NavLink key={path} to={path} end={end} className={linkClass}>
                 <Icon size={19} aria-hidden="true" />
                 {label}
@@ -87,7 +92,7 @@ export default function AdminLayout() {
               </button>
             </div>
             <nav className="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="Navigasi admin seluler">
-              {adminLinks.map(({ label, path, end }) => (
+              {visibleLinks.map(({ label, path, end }) => (
                 <NavLink
                   key={path}
                   to={path}

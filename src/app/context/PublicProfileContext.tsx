@@ -20,6 +20,10 @@ export type PublicProfile = {
   heroSubheadline: string;
   heroImageUrl: string;
   aboutImageUrl: string;
+  population: number | null;
+  households: number | null;
+  neighborhoodUnits: number | null;
+  communityUnits: number | null;
   serviceHours: string;
   facebookUrl: string | null;
   websiteUrl: string | null;
@@ -42,6 +46,10 @@ const localProfile: PublicProfile = {
   heroSubheadline: siteProfile.hero.description,
   heroImageUrl: siteProfile.hero.image,
   aboutImageUrl: siteProfile.about.images[0].src,
+  population: null,
+  households: null,
+  neighborhoodUnits: null,
+  communityUnits: null,
   serviceHours: contactData[3].value,
   facebookUrl: null,
   websiteUrl: null,
@@ -67,6 +75,10 @@ function safeUrl(value: string | null, fallback: string | null) {
   }
 }
 
+function statistic(value: number | null) {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0 ? value : null;
+}
+
 function resolveProfile(profile: Profile): PublicProfile {
   return {
     name: text(profile.nama_padukuhan, localProfile.name),
@@ -85,6 +97,10 @@ function resolveProfile(profile: Profile): PublicProfile {
     heroSubheadline: text(profile.hero_subheadline, localProfile.heroSubheadline),
     heroImageUrl: safeUrl(profile.hero_image_url, localProfile.heroImageUrl) ?? localProfile.heroImageUrl,
     aboutImageUrl: safeUrl(profile.about_image_url, localProfile.aboutImageUrl) ?? localProfile.aboutImageUrl,
+    population: statistic(profile.jumlah_jiwa),
+    households: statistic(profile.jumlah_kk),
+    neighborhoodUnits: statistic(profile.jumlah_rt),
+    communityUnits: statistic(profile.jumlah_rw),
     serviceHours: text(profile.jam_pelayanan, localProfile.serviceHours),
     facebookUrl: safeUrl(profile.facebook_url, localProfile.facebookUrl),
     websiteUrl: safeUrl(profile.website_url, localProfile.websiteUrl),

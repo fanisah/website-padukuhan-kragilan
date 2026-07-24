@@ -30,7 +30,7 @@ import {
 // Text:         #173F57
 // Muted:        #5F6F72
 // Border:       #D8E4DF
-import { Badge, SectionHeader } from "./shared";
+import { Badge, SectionHeader, SectionOrnament } from "./shared";
 import { newsContent, newsData } from "../../../data/news";
 import { usePublishedCollection } from "../../hooks/usePublishedCollection";
 import { getPublishedNews, type News } from "../../../services/news";
@@ -68,8 +68,9 @@ export default function NewsSection({ limit, pageHeading = false }: { limit?: nu
   const visibleItems = limit ? items.slice(0, limit) : items;
 
   return (
-    <section id="berita" className="py-20 lg:py-24 bg-[#FFFEF9]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="berita" className="relative overflow-hidden bg-[#FFFEF9] py-20 lg:py-24">
+      <SectionOrnament position="bottom-left" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-10">
           <SectionHeader
             as={pageHeading ? "h1" : "h2"}
@@ -86,9 +87,9 @@ export default function NewsSection({ limit, pageHeading = false }: { limit?: nu
           {visibleItems.map((n) => (
             <article
               key={n.slug}
-              className="group flex h-full flex-col bg-[#FFFEF9] rounded-2xl overflow-hidden border border-[#D8E4DF] shadow-[0_8px_24px_rgba(23,74,112,0.05)] hover:shadow-[0_14px_32px_rgba(23,74,112,0.10)] hover:border-[#0D6F6B]/25 transition-[border-color,box-shadow] duration-300"
+              className="group flex h-full flex-col overflow-hidden rounded-3xl border border-[#D8E4DF] bg-[#FFFEF9] shadow-[0_10px_28px_rgba(23,74,112,0.07)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-[#0D6F6B]/25 hover:shadow-[0_18px_40px_rgba(23,74,112,0.11)]"
             >
-              <div className="h-48 bg-[#F5F7F4] overflow-hidden border-b border-[#D8E4DF]">
+              <div className="m-2 h-48 overflow-hidden rounded-2xl border border-[#D8E4DF] bg-[#F5F7F4]">
                 {n.photo ? (
                   <img src={n.photo} alt={n.title} className="w-full h-full object-contain" />
                 ) : (

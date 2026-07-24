@@ -37,15 +37,6 @@ import { usePublicProfile } from "../../context/PublicProfileContext";
 import KragilanLogo from "../brand/KragilanLogo";
 import { createMailtoUrl, createWhatsAppUrl, GENERAL_WHATSAPP_MESSAGE } from "../../utils/contactLinks";
 
-function Pranadhara20px() {
-  // Subtle placeholder for the Pranadhara logo at ~20px
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-label="KKN Pranadhara Mlati">
-      <circle cx="10" cy="10" r="9.5" stroke="rgba(255,255,255,0.22)" strokeWidth="1" fill="rgba(255,255,255,0.06)" />
-      <text x="10" y="13.5" textAnchor="middle" fontSize="8" fontWeight="700" fill="rgba(255,255,255,0.35)" fontFamily="sans-serif">P</text>
-    </svg>
-  );
-}
 
 export default function Footer() {
   const profile = usePublicProfile();
@@ -113,7 +104,6 @@ export default function Footer() {
             © 2026 {profile.name}. Hak cipta dilindungi.
           </p>
           <div className="flex items-center gap-2">
-            <Pranadhara20px />
             <p className="text-[11px] text-white/20 italic">
               Dikembangkan dalam rangka KKN-PPM UGM Pranadhara Mlati 2026
             </p>
